@@ -1,3 +1,1 @@
-# Open Gifame
-
-Open source gif hosting for nerds.
+# Warning, may contain traces of webp
