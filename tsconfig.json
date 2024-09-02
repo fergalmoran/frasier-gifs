@@ -26,55 +26,17 @@
     /* Path Aliases */
     "baseUrl": ".",
     "paths": {
-<<<<<<< Updated upstream
-      "@*": [
-        "./*"
-      ]
-    },
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
-=======
       "@/*": ["./src/*"]
     }
->>>>>>> Stashed changes
   },
   "include": [
     ".eslintrc.cjs",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-<<<<<<< Updated upstream
-    ".next/types/**/*.ts"
-, ".working/.pages/upload.tsx"  ],
-  "exclude": [
-    "node_modules"
-  ]
-=======
     "**/*.cjs",
     "**/*.js",
     ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
->>>>>>> Stashed changes
 }
