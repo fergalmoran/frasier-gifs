@@ -6,9 +6,6 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import { omit } from "lodash";
-
-import { env } from "@/env";
 import { db } from "@/server/db";
 import {
   accounts,
@@ -16,7 +13,8 @@ import {
   users,
   verificationTokens,
 } from "@/server/db/schema";
-import { confirmPassword } from "@/lib/crypt";
+import { api } from "@/trpc/server";
+import { env } from "@/env";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -71,6 +69,10 @@ export const authOptions: NextAuthOptions = {
         if (!credentials) {
           return null;
         }
+        const result = await api.auth.login({
+          email: credentials.email,
+          password: credentials.password,
+        });
         // const user = await prisma.users.findUnique({
         //   where: { email: credentials.email },
         //   select: {
@@ -92,6 +94,11 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  session: {
+    strategy: "jwt",
+  },
+  secret: env.NEXTAUTH_SECRET,
+  debug: env.NODE_ENV === "development",
   pages: {
     signIn: "/auth/signin",
     signOut: "/auth/signout",

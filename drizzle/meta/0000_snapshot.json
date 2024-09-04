@@ -1,11 +1,11 @@
 {
-  "id": "eba24bbe-db75-4d3a-a69e-fc8fc26a5173",
+  "id": "3cde7a7b-e714-4d18-a93a-9e07c9e48f5a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.opengifame_account": {
-      "name": "opengifame_account",
+    "public.account": {
+      "name": "account",
       "schema": "",
       "columns": {
         "user_id": {
@@ -93,10 +93,10 @@
         }
       },
       "foreignKeys": {
-        "opengifame_account_user_id_opengifame_user_id_fk": {
-          "name": "opengifame_account_user_id_opengifame_user_id_fk",
-          "tableFrom": "opengifame_account",
-          "tableTo": "opengifame_user",
+        "account_user_id_user_id_fk": {
+          "name": "account_user_id_user_id_fk",
+          "tableFrom": "account",
+          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
@@ -108,8 +108,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "opengifame_account_provider_provider_account_id_pk": {
-          "name": "opengifame_account_provider_provider_account_id_pk",
+        "account_provider_provider_account_id_pk": {
+          "name": "account_provider_provider_account_id_pk",
           "columns": [
             "provider",
             "provider_account_id"
@@ -118,8 +118,8 @@
       },
       "uniqueConstraints": {}
     },
-    "public.opengifame_post": {
-      "name": "opengifame_post",
+    "public.post": {
+      "name": "post",
       "schema": "",
       "columns": {
         "id": {
@@ -187,10 +187,10 @@
         }
       },
       "foreignKeys": {
-        "opengifame_post_created_by_opengifame_user_id_fk": {
-          "name": "opengifame_post_created_by_opengifame_user_id_fk",
-          "tableFrom": "opengifame_post",
-          "tableTo": "opengifame_user",
+        "post_created_by_user_id_fk": {
+          "name": "post_created_by_user_id_fk",
+          "tableFrom": "post",
+          "tableTo": "user",
           "columnsFrom": [
             "created_by"
           ],
@@ -204,8 +204,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.opengifame_session": {
-      "name": "opengifame_session",
+    "public.session": {
+      "name": "session",
       "schema": "",
       "columns": {
         "session_token": {
@@ -245,10 +245,10 @@
         }
       },
       "foreignKeys": {
-        "opengifame_session_user_id_opengifame_user_id_fk": {
-          "name": "opengifame_session_user_id_opengifame_user_id_fk",
-          "tableFrom": "opengifame_session",
-          "tableTo": "opengifame_user",
+        "session_user_id_user_id_fk": {
+          "name": "session_user_id_user_id_fk",
+          "tableFrom": "session",
+          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
@@ -262,8 +262,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.opengifame_user": {
-      "name": "opengifame_user",
+    "public.user": {
+      "name": "user",
       "schema": "",
       "columns": {
         "id": {
@@ -296,6 +296,12 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
+        },
+        "password": {
+          "name": "password",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -303,8 +309,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.opengifame_verification_token": {
-      "name": "opengifame_verification_token",
+    "public.verification_token": {
+      "name": "verification_token",
       "schema": "",
       "columns": {
         "identifier": {
@@ -329,8 +335,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "opengifame_verification_token_identifier_token_pk": {
-          "name": "opengifame_verification_token_identifier_token_pk",
+        "verification_token_identifier_token_pk": {
+          "name": "verification_token_identifier_token_pk",
           "columns": [
             "identifier",
             "token"

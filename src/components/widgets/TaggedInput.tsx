@@ -1,5 +1,5 @@
-import { logger } from '@lib/logger';
-import React, { KeyboardEventHandler } from 'react';
+import { logger } from "@/lib/logger";
+import React, { KeyboardEventHandler } from "react";
 
 interface ITaggedInputProps {
   label: string;
@@ -12,12 +12,12 @@ const TaggedInput: React.FC<ITaggedInputProps> = ({
   onChange,
 }) => {
   const [isSearching, setIsSearching] = React.useState(false);
-  const [searchText, setSearchText] = React.useState<string>('');
+  const [searchText, setSearchText] = React.useState<string>("");
   const [searchResults, setSearchResults] = React.useState<Array<string>>([]);
   const [tags, setTags] = React.useState<Array<string>>(value);
 
   React.useEffect(() => {
-    logger.debug('TaggedInput', 'callingOnChange', tags);
+    logger.debug("TaggedInput", "callingOnChange", tags);
     onChange(tags);
   }, [tags, onChange]);
   const removeTag = (tag: string) => {
@@ -42,7 +42,7 @@ const TaggedInput: React.FC<ITaggedInputProps> = ({
     await searchTags(value);
   };
   const handleKeyPress = ($event: React.KeyboardEvent<HTMLInputElement>) => {
-    if ($event.code === 'Enter' || $event.code === 'NumpadEnter') {
+    if ($event.code === "Enter" || $event.code === "NumpadEnter") {
       __addTag(searchText);
     }
   };
@@ -50,34 +50,29 @@ const TaggedInput: React.FC<ITaggedInputProps> = ({
     setTags([...tags, tag]);
     setSearchResults([]);
     setIsSearching(false);
-    setSearchText('');
+    setSearchText("");
   };
-  const doResultClick = ($event: any) => __addTag($event.target.textContent);
+  const doResultClick = ($event: any) =>
+    __addTag($event.target.textContent as string);
   return (
     <>
-      <label
-        htmlFor="{name}"
-        className="block text-sm font-medium"
-      >
+      <label htmlFor="{name}" className="block text-sm font-medium">
         {label}
       </label>
-      <div className="flex w-full text-sm align-middle border rounded-lg shadow-sm border-accent ">
-        <div className="flex flex-row pt-3 pl-2 space-x-1">
+      <div className="border-accent flex w-full rounded-lg border align-middle text-sm shadow-sm">
+        <div className="flex flex-row space-x-1 pl-2 pt-3">
           {tags &&
             tags.map((tag) => (
-              <span
-                key={tag}
-                className="badge badge-primary badge-lg py-0.5"
-              >
+              <span key={tag} className="badge badge-primary badge-lg py-0.5">
                 {tag}
                 <button
                   onClick={() => removeTag(tag)}
                   type="button"
-                  className="flex-shrink-0 ml-0.5 h-4 w-4 rounded-full inline-flex items-center justify-center "
+                  className="ml-0.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full"
                 >
                   <span className="sr-only">{tag}</span>
                   <svg
-                    className="w-2 h-2"
+                    className="h-2 w-2"
                     stroke="currentColor"
                     fill="none"
                     viewBox="0 0 8 8"
@@ -97,17 +92,14 @@ const TaggedInput: React.FC<ITaggedInputProps> = ({
           onKeyDown={handleKeyPress}
           onChange={handleChange}
           placeholder="Start typing and press enter"
-          className="w-full input focus:outline-none"
+          className="input w-full focus:outline-none"
         />
       </div>
       {isSearching && (
-        <div
-          role="status"
-          className="z-50 ml-5 -mt-3"
-        >
+        <div role="status" className="z-50 -mt-3 ml-5">
           <svg
             aria-hidden="true"
-            className="w-4 h-4 mr-2 "
+            className="mr-2 h-4 w-4"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -128,14 +120,14 @@ const TaggedInput: React.FC<ITaggedInputProps> = ({
         <div className={`z-50 mb-4 flex space-y-0`}>
           <aside
             aria-labelledby="menu-heading"
-            className="absolute z-50 flex flex-col items-start w-64 -mt-5 text-sm bg-white border rounded-md shadow-md"
+            className="absolute z-50 -mt-5 flex w-64 flex-col items-start rounded-md border bg-white text-sm shadow-md"
           >
-            <ul className="flex flex-col w-full">
+            <ul className="flex w-full flex-col">
               {searchResults.map((result) => (
                 <li
                   key={result}
                   onClick={doResultClick}
-                  className="px-2 py-1 space-x-2 cursor-pointer hover:bg-indigo-500 hover:text-white focus:bg-indigo-500 focus:text-white focus:outline-none"
+                  className="cursor-pointer space-x-2 px-2 py-1 hover:bg-indigo-500 hover:text-white focus:bg-indigo-500 focus:text-white focus:outline-none"
                 >
                   {result}
                 </li>

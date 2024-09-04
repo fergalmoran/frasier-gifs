@@ -1,23 +1,17 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 import {
-  ClientSafeProvider,
+  type ClientSafeProvider,
+  type LiteralUnion,
   getProviders,
-  LiteralUnion,
   signIn,
   useSession,
-} from 'next-auth/react';
-import { logger } from '@lib/logger';
-import { BuiltInProviderType } from 'next-auth/providers';
-import {
-  FaFacebook,
-  FaGithub,
-  FaGithubAlt,
-  FaGoogle,
-  FaTwitter,
-} from 'react-icons/fa';
-import { useRouter } from 'next/navigation';
+} from "next-auth/react";
+import { logger } from "@/lib/logger";
+import { FaFacebook, FaGithub, FaGoogle, FaTwitter } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import type { BuiltInProviderType } from "next-auth/providers/index";
 
 const SocialLogin = () => {
   const router = useRouter();
@@ -32,56 +26,58 @@ const SocialLogin = () => {
       const setupProviders = await getProviders();
       setproviders(setupProviders);
     };
-    setTheProviders();
+    setTheProviders().catch((error) => {
+      logger.error("SocialLogin", "Error setting up providers", error);
+    });
   }, []);
   const handleProviderAuth = async (provider: string) => {
-    logger.debug('signin', 'handleProviderAuth', provider);
+    logger.debug("signin", "handleProviderAuth", provider);
     const res = await signIn(provider, {
       callbackUrl: `${process.env.API_URL}`,
     });
-    logger.debug('signin', 'handleProviderAuth_res', res);
+    logger.debug("signin", "handleProviderAuth_res", res);
     if (res?.ok) {
-      router.push('/');
+      router.push("/");
     }
   };
   return (
     <>
       <div className="divider">or continue with</div>
-      <div className="flex flex-grow w-full gap-3 mt-6">
+      <div className="mt-6 flex w-full flex-grow gap-3">
         {providers?.facebook && (
           <button
             onClick={() => handleProviderAuth(providers.facebook.id)}
-            className="justify-center flex-1 w-full px-2 py-1 btn btn-outline "
+            className="btn btn-outline w-full flex-1 justify-center px-2 py-1"
           >
             <span className="sr-only">Sign in with Facebook</span>
-            <FaFacebook className="w-5 h-5" />
+            <FaFacebook className="h-5 w-5" />
           </button>
         )}
         {providers?.google && (
           <button
             onClick={() => handleProviderAuth(providers.google.id)}
-            className="justify-center flex-1 w-full px-2 py-1 btn btn-outline "
+            className="btn btn-outline w-full flex-1 justify-center px-2 py-1"
           >
             <span className="sr-only">Sign in with Google</span>
-            <FaGoogle className="w-5 h-5" />
+            <FaGoogle className="h-5 w-5" />
           </button>
         )}
         {providers?.github && (
           <button
             onClick={() => handleProviderAuth(providers.github.id)}
-            className="justify-center flex-1 w-full px-2 py-1 btn btn-outline "
+            className="btn btn-outline w-full flex-1 justify-center px-2 py-1"
           >
             <span className="sr-only">Sign in with GitHub</span>
-            <FaGithub className="w-5 h-5" />
+            <FaGithub className="h-5 w-5" />
           </button>
         )}
         {providers?.twitter && (
           <button
             onClick={() => handleProviderAuth(providers.twitter.id)}
-            className="justify-center flex-1 w-full px-2 py-1 btn btn-outline "
+            className="btn btn-outline w-full flex-1 justify-center px-2 py-1"
           >
             <span className="sr-only">Sign in with Twitter</span>
-            <FaTwitter className="w-5 h-5" />
+            <FaTwitter className="h-5 w-5" />
           </button>
         )}
       </div>
