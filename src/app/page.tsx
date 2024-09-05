@@ -16,7 +16,7 @@ export default async function Home() {
           </h1>
 
           <div>
-            <a href="/auth/signin">Sign In</a>
+            <a href="/(site)/(auth)/signin">Sign In</a>
           </div>
           {session?.user && <TrendingImages />}
         </div>

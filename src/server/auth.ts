@@ -100,11 +100,9 @@ export const authOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
   debug: env.NODE_ENV === "development",
   pages: {
-    signIn: "/auth/signin",
-    signOut: "/auth/signout",
-    error: "/auth/error",
-    verifyRequest: "/auth/verify-request",
-    newUser: "/auth/new-user",
+    signIn: "/signin",
+    signOut: "/signout",
+    newUser: "/register",
   },
 };
 

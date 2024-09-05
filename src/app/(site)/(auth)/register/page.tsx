@@ -1,7 +1,7 @@
 "use client";
 
-import React from 'react';
-import RegistrationForm from '@/components/RegistrationForm';
+import React from "react";
+import RegistrationForm from "@/components/forms/auth/RegistrationForm";
 
 const RegisterPage: React.FC = () => {
   return (
