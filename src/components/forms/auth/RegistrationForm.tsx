@@ -19,6 +19,8 @@ import { logger } from "@/lib/logger";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
 const registrationSchema = z
   .object({
     email: z.string().email({ message: "Invalid email address" }),
@@ -41,6 +43,7 @@ type RegistrationFormValues = z.infer<typeof registrationSchema>;
 
 const RegistrationForm: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const router = useRouter();
   const form = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationSchema),
   });
@@ -52,6 +55,7 @@ const RegistrationForm: React.FC = () => {
     try {
       await createUser.mutateAsync(data);
       toast("User registered successfully");
+      router.push("/signin");
     } catch (error) {
       logger.error("RegistrationForm", "error", error);
       toast("Failed to register user");
@@ -68,6 +72,7 @@ const RegistrationForm: React.FC = () => {
             <FormField
               control={form.control}
               name="email"
+              defaultValue={"fergal.moran+opengifame@gmail.com"}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
@@ -85,6 +90,7 @@ const RegistrationForm: React.FC = () => {
             <FormField
               control={form.control}
               name="password"
+              defaultValue={"secret"}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
@@ -102,6 +108,7 @@ const RegistrationForm: React.FC = () => {
             <FormField
               control={form.control}
               name="confirmPassword"
+              defaultValue={"secret"}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Confirm password</FormLabel>

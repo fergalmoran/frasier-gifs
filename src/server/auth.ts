@@ -4,9 +4,9 @@ import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
+  RequestInternal,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import { db } from "@/server/db";
 import {
   accounts,
   sessions,
@@ -15,33 +15,18 @@ import {
 } from "@/server/db/schema";
 import { api } from "@/trpc/server";
 import { env } from "@/env";
+import { db } from "@/server/db";
 
-/**
- * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
- * object and keep type safety.
- *
- * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
- */
+import Credentials from "next-auth/providers/credentials";
+
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
     } & DefaultSession["user"];
   }
-
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
 }
 
-/**
- * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
- *
- * @see https://next-auth.js.org/configuration/options
- */
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session: ({ session, user }) => ({
@@ -59,13 +44,13 @@ export const authOptions: NextAuthOptions = {
     verificationTokensTable: verificationTokens,
   }) as Adapter,
   providers: [
-    CredentialsProvider({
-      type: "credentials",
+    Credentials({
+      name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      authorize: async (credentials, request) => {
+      authorize: async (credentials, _request) => {
         if (!credentials) {
           return null;
         }
@@ -73,30 +58,14 @@ export const authOptions: NextAuthOptions = {
           email: credentials.email,
           password: credentials.password,
         });
-        // const user = await prisma.users.findUnique({
-        //   where: { email: credentials.email },
-        //   select: {
-        //     id: true,
-        //     email: true,
-        //     password: true,
-        //   },
-        // });
-        // if (user && user.password) {
-        //   const hashed = await confirmPassword(
-        //     credentials.password,
-        //     user.password,
-        //   );
-        //   if (hashed) {
-        //     return omit(user, "password");
-        //   }
-        // }
-        return null;
+        if (!result) {
+          return null;
+        }
+        return { id: result.id, email: result.email };
       },
     }),
   ],
-  session: {
-    strategy: "jwt",
-  },
+
   secret: env.NEXTAUTH_SECRET,
   debug: env.NODE_ENV === "development",
   pages: {
