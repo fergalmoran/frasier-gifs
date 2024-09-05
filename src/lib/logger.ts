@@ -19,7 +19,8 @@ prefix.reg(log);
 
 prefix.apply(log, {
   format(level, name, timestamp) {
-    return `${chalk.gray(`[${timestamp.toISOString()}]`)} ${colours[
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    return `${chalk.gray(`[${timestamp}]`)} ${colours[
       level.toUpperCase() as ObjectKey
     ](level)} ${chalk.green(`${name}:`)}`;
   },

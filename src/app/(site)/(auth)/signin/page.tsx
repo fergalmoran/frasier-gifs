@@ -19,7 +19,7 @@ const SignInPage = () => {
         </h2>
         <p className="mt-2 text-center text-sm">
           Or
-          <Link href="/auth/signup" className="font-medium">
+          <Link href="/register" className="font-medium">
             create a new account
           </Link>
         </p>

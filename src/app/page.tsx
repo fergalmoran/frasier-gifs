@@ -1,6 +1,6 @@
 import { TrendingImages } from "@/app/_components/trending-images";
 import { getServerAuthSession } from "@/server/auth";
-import { api, HydrateClient } from "@/trpc/server";
+import { HydrateClient } from "@/trpc/server";
 
 export default async function Home() {
   const session = await getServerAuthSession();
@@ -16,7 +16,7 @@ export default async function Home() {
           </h1>
 
           <div>
-            <a href="/auth/signin">Sign In</a>
+            <a href="/signin">Sign In</a>
           </div>
           {session?.user && <TrendingImages />}
         </div>
