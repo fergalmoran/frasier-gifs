@@ -16,18 +16,4 @@ export const authRouter = createTRPCRouter({
       return user;
     }),
 
-  login: publicProcedure
-    .input(z.object({ email: z.string().email(), password: z.string().min(5) }))
-    .query(async ({ ctx, input }) => {
-      const hashedPassword = await bcrypt.hash(input.password, 10);
-      const user = await ctx.db
-        .select()
-        .from(users)
-        .where(
-          and(eq(users.email, input.email), eq(users.password, hashedPassword)),
-        )
-        .limit(1);
-
-      return user[0];
-    }),
 });

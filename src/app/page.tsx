@@ -18,6 +18,8 @@ export default async function Home() {
           <div>
             <a href="/signin">Sign In</a>
           </div>
+
+          <div>{JSON.stringify(session, null, 2)}</div>
           {session?.user && <TrendingImages />}
         </div>
       </main>

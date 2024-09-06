@@ -1,10 +1,8 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import CredentialsProvider from "next-auth/providers/credentials";
 import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
-  RequestInternal,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
 import {
@@ -13,11 +11,12 @@ import {
   users,
   verificationTokens,
 } from "@/server/db/schema";
-import { api } from "@/trpc/server";
 import { env } from "@/env";
 import { db } from "@/server/db";
 
 import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
+import { and, eq } from "drizzle-orm";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -29,13 +28,18 @@ declare module "next-auth" {
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    session: ({ session, user }) => {
+      const s = {
+        ...session,
+        user: {
+          ...session.user
+        },
+      };
+      return s;
+    },
+  },
+  session: {
+    strategy: "jwt",
   },
   adapter: DrizzleAdapter(db, {
     usersTable: users,
@@ -54,14 +58,24 @@ export const authOptions: NextAuthOptions = {
         if (!credentials) {
           return null;
         }
-        const result = await api.auth.login({
-          email: credentials.email,
-          password: credentials.password,
-        });
-        if (!result) {
+        const user = await db
+          .select()
+          .from(users)
+          .where(and(eq(users.email, credentials.email)))
+          .limit(1);
+
+        if (!user || user.length < 1) {
           return null;
         }
-        return { id: result.id, email: result.email };
+        if (
+          !(await bcrypt.compare(
+            credentials.password,
+            user[0]!.password as string,
+          ))
+        ) {
+          return null;
+        }
+        return { id: user[0]!.id, email: user[0]!.email };
       },
     }),
   ],
