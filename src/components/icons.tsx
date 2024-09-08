@@ -30,7 +30,6 @@ import {
 export type Icon = typeof LucideIcon;
 
 export const Icons = {
-  logo: Command,
   close: X,
   spinner: Loader2,
   chevronLeft: ChevronLeft,
@@ -47,6 +46,53 @@ export const Icons = {
   user: User,
   arrowRight: ArrowRight,
   help: HelpCircle,
+  logo: ({ ...props }: LucideProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" {...props}>
+      {/* Background */}
+      <rect
+        x="0"
+        y="0"
+        width="100"
+        height="100"
+        rx="20"
+        ry="20"
+        fill="#FF6B6B"
+      />
+
+      {/* Abstract prism shape - significantly enlarged */}
+      <path d="M50,10 L90,80 L10,80 Z" fill="white" />
+
+      {/* Color refraction lines - adjusted for new size */}
+      <path
+        d="M50,10 L62,80"
+        stroke="#FFD166"
+        strokeWidth={4}
+        strokeLinecap="round"
+      />
+      <path
+        d="M50,10 L50,80"
+        stroke="#06D6A0"
+        strokeWidth={4}
+        strokeLinecap="round"
+      />
+      <path
+        d="M50,10 L38,80"
+        stroke="#118AB2"
+        strokeWidth={4}
+        strokeLinecap="round"
+      />
+
+      {/* Circular highlight - adjusted position and size */}
+      <circle
+        cx="50"
+        cy="35"
+        r="9"
+        fill="#FF6B6B"
+        stroke="white"
+        strokeWidth={2.5}
+      />
+    </svg>
+  ),
   pizza: Pizza,
   terminal: Terminal,
   sun: SunMedium,

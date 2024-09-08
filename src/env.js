@@ -20,7 +20,7 @@ export const env = createEnv({
       // Since NextAuth.js automatically uses the VERCEL_URL if present.
       (str) => process.env.VERCEL_URL ?? str,
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
-      process.env.VERCEL ? z.string() : z.string().url()
+      process.env.VERCEL ? z.string() : z.string().url(),
     ),
   },
 
@@ -31,6 +31,14 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_SITE_NAME: z.string().default("My Site"),
+    NEXT_PUBLIC_SITE_DESCRIPTION: z.string().default("My site description"),
+    NEXT_PUBLIC_SITE_URL: z.string().default("https://opengifame.com"),
+    NEXT_PUBLIC_SITE_OG_IMAGE: z
+      .string()
+      .default("https://example.com/og-image.jpg"),
+    NEXT_PUBLIC_SITE_TWITTER: z.string().default(""),
+    NEXT_PUBLIC_SITE_GITHUB: z.string().default(""),
   },
 
   /**
@@ -42,6 +50,13 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+
+    NEXT_PUBLIC_SITE_NAME: process.env.NEXT_PUBLIC_SITE_NAME,
+    NEXT_PUBLIC_SITE_DESCRIPTION: process.env.NEXT_PUBLIC_SITE_NAME,
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_NAME,
+    NEXT_PUBLIC_SITE_OG_IMAGE: process.env.NEXT_PUBLIC_SITE_NAME,
+    NEXT_PUBLIC_SITE_TWITTER: process.env.NEXT_PUBLIC_SITE_NAME,
+    NEXT_PUBLIC_SITE_GITHUB: process.env.NEXT_PUBLIC_SITE_NAME,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

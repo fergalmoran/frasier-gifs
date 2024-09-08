@@ -9,6 +9,9 @@ import { ThemeProvider } from "next-themes";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/ui/toaster";
 import React from "react";
+import TopNavbar from "@/components/navbar/top-navbar";
+import { dashboardConfig } from "@/config/top-nav.config";
+import { siteConfig } from "@/config/site.config";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -23,7 +26,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "Open Gifame",
-  description: "Contains traces of gifs",
+  description: siteConfig.description,
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
@@ -49,6 +52,7 @@ export default function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <Toaster />
             <TailwindIndicator />
+            <TopNavbar items={dashboardConfig.mainNav} />
             {children}
           </ThemeProvider>
         </TRPCReactProvider>
