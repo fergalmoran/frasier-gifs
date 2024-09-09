@@ -6,7 +6,6 @@ export type NavItem = {
 export type DashboardConfig = {
   mainNav: NavItem[];
 };
-
 export type SiteConfig = {
   name: string;
   description: string;

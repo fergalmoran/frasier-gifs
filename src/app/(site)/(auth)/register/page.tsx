@@ -1,12 +1,10 @@
 "use client";
 
 import React from "react";
-import RegistrationForm from "@/components/forms/auth/RegistrationForm";
-import SocialLogin from "@/components/widgets/login/SocialLogin";
+import RegistrationForm from "@/components/forms/auth/registration-form";
+import SocialLogin from "@/components/widgets/login/social-login-button";
 import Link from "next/link";
 import { Icons } from "@/components/icons";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 
 const RegisterPage: React.FC = () => {
   return (

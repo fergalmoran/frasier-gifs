@@ -3,23 +3,23 @@
 import React from "react";
 import { signIn } from "next-auth/react";
 import { RiLoginCircleLine } from "react-icons/ri";
-import UserNavDropdown from "../UserNavDropdown";
+import UserNavDropdown from "../user-nav-dropdown";
+import { type Session } from "next-auth";
+import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/icons";
 
 interface ILoginButtonProps {
-  session: any;
+  session: Session | null;
 }
 
 const LoginButton: React.FC<ILoginButtonProps> = ({ session }) => {
   return session ? (
     <UserNavDropdown session={session} />
   ) : (
-    <button
-      onClick={() => signIn()}
-      className="btn btn-ghost drawer-button normal-case"
-    >
-      <RiLoginCircleLine className="inline-block h-6 w-6 fill-current md:mr-1" />
+    <Button onClick={() => signIn()} className="">
+      <Icons.login className="mr-2 h-4 w-4" />
       Login
-    </button>
+    </Button>
   );
 };
 

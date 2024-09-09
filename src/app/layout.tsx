@@ -1,7 +1,7 @@
-import { Inter as FontSans } from "next/font/google";
+import { Roboto as font } from "next/font/google";
 import "@/styles/globals.css";
 
-import { type Metadata, Viewport } from "next";
+import { type Metadata, type Viewport } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { cn } from "@/lib/utils";
@@ -12,17 +12,18 @@ import React from "react";
 import TopNavbar from "@/components/navbar/top-navbar";
 import { dashboardConfig } from "@/config/top-nav.config";
 import { siteConfig } from "@/config/site.config";
+import { getServerSession } from "next-auth";
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
 };
+const f = font({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Open Gifame",
@@ -30,9 +31,10 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const session = await getServerSession();
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -45,15 +47,15 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable,
+          f.className,
         )}
       >
         <TRPCReactProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <Toaster />
             <TailwindIndicator />
-            <TopNavbar items={dashboardConfig.mainNav} />
-            {children}
+            <TopNavbar items={dashboardConfig.mainNav} session={session} />
+            <main className="m-4">{children}</main>
           </ThemeProvider>
         </TRPCReactProvider>
       </body>

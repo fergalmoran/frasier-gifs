@@ -1,11 +1,9 @@
 "use client";
-import SocialLogin from "@/components/widgets/login/SocialLogin";
+import SocialLogin from "@/components/widgets/login/social-login-button";
 import Link from "next/link";
 import React from "react";
 import { Icons } from "@/components/icons";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
-import SignInForm from "@/components/forms/auth/SignInForm";
+import SignInForm from "@/components/forms/auth/signin-form";
 
 const SignInPage = () => {
   return (

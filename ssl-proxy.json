@@ -1,0 +1,8 @@
+{
+  "Dev Proxy": {
+    "source": "3000",
+    "target": "3002",
+    "key": "/etc/letsencrypt/live/dev.fergl.ie/privkey.pem",
+    "cert": "/etc/letsencrypt/live/dev.fergl.ie/fullchain.pem"
+  }
+}

@@ -1,28 +1,25 @@
-'use client';
-import { logger } from '@lib/logger';
-import React, { Fragment } from 'react';
-import { Menu, Transition } from '@headlessui/react';
-import { signOut } from 'next-auth/react';
+"use client";
+import React, { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { signOut } from "next-auth/react";
+import { logger } from "@/lib/logger";
 
 interface IUserNavDropdownProps {
   session: any;
 }
 const UserNavDropdown: React.FC<IUserNavDropdownProps> = ({ session }) => {
   React.useEffect(() => {
-    logger.debug('UserNavDropdown', 'session', session);
+    logger.debug("UserNavDropdown", "session", session);
   }, [session]);
 
   return (
     <div className="flex items-center">
-      <Menu
-        as="div"
-        className="relative flex-shrink-0 ml-4"
-      >
+      <Menu as="div" className="relative ml-4 flex-shrink-0">
         <div>
-          <Menu.Button className="flex text-sm text-white bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+          <Menu.Button className="flex rounded-full bg-gray-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
             <span className="sr-only">Open user menu</span>
             <img
-              className="w-8 h-8 rounded-full"
+              className="h-8 w-8 rounded-full"
               src={session?.user?.image as string}
               alt="Profile image"
             />
@@ -37,7 +34,7 @@ const UserNavDropdown: React.FC<IUserNavDropdownProps> = ({ session }) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 z-50 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <Menu.Item>
               {({ active }) => (
                 <button

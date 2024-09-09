@@ -1,5 +1,5 @@
-import { TrendingImages } from "@/app/_components/trending-images";
 import LandingPage from "@/components/pages/landing-page";
+import { TrendingImages } from "@/components/trending-images";
 import { getServerAuthSession } from "@/server/auth";
 import { HydrateClient } from "@/trpc/server";
 
