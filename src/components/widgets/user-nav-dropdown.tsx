@@ -3,13 +3,17 @@ import React, { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { signOut } from "next-auth/react";
 import { logger } from "@/lib/logger";
+import { type Session } from "next-auth";
 
 interface IUserNavDropdownProps {
-  session: any;
+  session: Session | null;
 }
 const UserNavDropdown: React.FC<IUserNavDropdownProps> = ({ session }) => {
+  const [profileImage, setProfileImage] = React.useState<string>();
   React.useEffect(() => {
     logger.debug("UserNavDropdown", "session", session);
+
+    setProfileImage(session?.user?.image || "/images/default-profile.jpg");
   }, [session]);
 
   return (
@@ -20,7 +24,7 @@ const UserNavDropdown: React.FC<IUserNavDropdownProps> = ({ session }) => {
             <span className="sr-only">Open user menu</span>
             <img
               className="h-8 w-8 rounded-full"
-              src={session?.user?.image as string}
+              src={profileImage}
               alt="Profile image"
             />
           </Menu.Button>

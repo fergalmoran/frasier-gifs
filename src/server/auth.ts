@@ -32,7 +32,7 @@ export const authOptions: NextAuthOptions = {
       const s = {
         ...session,
         user: {
-          ...session.user
+          ...session.user,
         },
       };
       return s;
@@ -67,12 +67,7 @@ export const authOptions: NextAuthOptions = {
         if (!user || user.length < 1) {
           return null;
         }
-        if (
-          !(await bcrypt.compare(
-            credentials.password,
-            user[0]!.password as string,
-          ))
-        ) {
+        if (!(await bcrypt.compare(credentials.password, user[0]!.password!))) {
           return null;
         }
         return { id: user[0]!.id, email: user[0]!.email };
