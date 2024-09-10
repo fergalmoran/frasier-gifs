@@ -2,8 +2,7 @@
 
 import React from "react";
 import { signIn } from "next-auth/react";
-import { RiLoginCircleLine } from "react-icons/ri";
-import UserNavDropdown from "../user-nav-dropdown";
+import UserNavDropdown from "@/components/widgets/user-nav-dropdown";
 import { type Session } from "next-auth";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";

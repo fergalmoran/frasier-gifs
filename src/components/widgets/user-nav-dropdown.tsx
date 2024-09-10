@@ -1,5 +1,7 @@
 "use client";
 import React, { Fragment } from "react";
+import Image from "next/image";
+
 import { Menu, Transition } from "@headlessui/react";
 import { signOut } from "next-auth/react";
 import { logger } from "@/lib/logger";
@@ -9,10 +11,11 @@ interface IUserNavDropdownProps {
   session: Session | null;
 }
 const UserNavDropdown: React.FC<IUserNavDropdownProps> = ({ session }) => {
-  const [profileImage, setProfileImage] = React.useState<string>();
+  const [profileImage, setProfileImage] = React.useState<string>(
+    session?.user?.image || "/images/default-profile.jpg",
+  );
   React.useEffect(() => {
     logger.debug("UserNavDropdown", "session", session);
-
     setProfileImage(session?.user?.image || "/images/default-profile.jpg");
   }, [session]);
 
@@ -22,11 +25,15 @@ const UserNavDropdown: React.FC<IUserNavDropdownProps> = ({ session }) => {
         <div>
           <Menu.Button className="flex rounded-full bg-gray-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
             <span className="sr-only">Open user menu</span>
-            <img
-              className="h-8 w-8 rounded-full"
-              src={profileImage}
-              alt="Profile image"
-            />
+            {profileImage && (
+              <Image
+                width={32}
+                height={32}
+                className="h-8 w-8 rounded-full"
+                src={profileImage}
+                alt="Profile image"
+              />
+            )}
           </Menu.Button>
         </div>
         <Transition

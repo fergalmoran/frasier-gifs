@@ -26,6 +26,7 @@ import {
   type Icon as LucideIcon,
   Terminal,
   LogIn,
+  Upload,
 } from "lucide-react";
 
 export type Icon = typeof LucideIcon;
@@ -112,4 +113,5 @@ export const Icons = {
   ),
   twitter: Twitter,
   check: Check,
+  upload: Upload,
 };

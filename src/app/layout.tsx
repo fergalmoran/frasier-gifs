@@ -1,4 +1,4 @@
-import { Roboto as font } from "next/font/google";
+import { Inknut_Antiqua as font } from "next/font/google";
 import "@/styles/globals.css";
 
 import { type Metadata, type Viewport } from "next";
@@ -13,6 +13,7 @@ import TopNavbar from "@/components/navbar/top-navbar";
 import { dashboardConfig } from "@/config/top-nav.config";
 import { siteConfig } from "@/config/site.config";
 import { getServerSession } from "next-auth";
+import { SessionProvider } from "next-auth/react";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -21,8 +22,8 @@ export const viewport: Viewport = {
   ],
 };
 const f = font({
-  weight: "400",
   subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {

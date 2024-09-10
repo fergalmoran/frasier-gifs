@@ -49,6 +49,7 @@ const SignInForm: React.FC = () => {
       logger.debug("signin", "result", result);
       if (result?.status === 200) {
         router.push("/");
+        window.location.reload();
       }
     } catch (error) {
       logger.error("SignInForm", "error", error);

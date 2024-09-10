@@ -5,12 +5,12 @@ import React from "react";
 import { type NavItem } from "@/types";
 import { type Session } from "next-auth";
 
-import { Icons } from "../icons";
+import { Icons } from "@/components/icons";
 import { siteConfig } from "@/config/site.config";
 import { cn } from "@/lib/utils";
 import { useSelectedLayoutSegment } from "next/navigation";
 
-import LoginButton from "../widgets/login/login-button";
+import LoginButton from "@/components/widgets/login/login-button";
 
 type TopNavbarProps = {
   items: NavItem[];
