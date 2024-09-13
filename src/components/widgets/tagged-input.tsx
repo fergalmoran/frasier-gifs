@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import React, { KeyboardEventHandler } from "react";
+import React from "react";
 import { Input } from "@/components/ui/input";
 
 interface ITaggedInputProps {
@@ -32,7 +32,10 @@ const TaggedInput: React.FC<ITaggedInputProps> = ({
     setIsSearching(true);
     const response = await fetch(`api/tags/search?q=${searchText}`);
     if (response.status === 200) {
+      //TODO: Fix this cluster of fucks!
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const results = await response.json();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       setSearchResults(results.map((r: { name: string }) => r.name));
     }
     setIsSearching(false);
@@ -53,8 +56,8 @@ const TaggedInput: React.FC<ITaggedInputProps> = ({
     setIsSearching(false);
     setSearchText("");
   };
-  const doResultClick = ($event: any) =>
-    __addTag($event.target.textContent as string);
+  const doResultClick = ($event: React.MouseEvent<HTMLLIElement>) =>
+    __addTag($event.currentTarget.textContent!);
   return (
     <>
       <label htmlFor="{name}" className="block text-sm font-medium">
@@ -62,31 +65,30 @@ const TaggedInput: React.FC<ITaggedInputProps> = ({
       </label>
       <div className="flex w-full rounded-lg align-middle text-sm shadow-sm">
         <div className="flex flex-row space-x-1">
-          {tags &&
-            tags.map((tag) => (
-              <span key={tag} className="badge badge-primary badge-lg py-0.5">
-                {tag}
-                <button
-                  onClick={() => removeTag(tag)}
-                  type="button"
-                  className="ml-0.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full"
+          {tags?.map((tag) => (
+            <span key={tag} className="badge badge-primary badge-lg py-0.5">
+              {tag}
+              <button
+                onClick={() => removeTag(tag)}
+                type="button"
+                className="ml-0.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full"
+              >
+                <span className="sr-only">{tag}</span>
+                <svg
+                  className="h-2 w-2"
+                  stroke="currentColor"
+                  fill="none"
+                  viewBox="0 0 8 8"
                 >
-                  <span className="sr-only">{tag}</span>
-                  <svg
-                    className="h-2 w-2"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 8 8"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeWidth={1.5}
-                      d="M1 1l6 6m0-6L1 7"
-                    />
-                  </svg>
-                </button>
-              </span>
-            ))}
+                  <path
+                    strokeLinecap="round"
+                    strokeWidth={1.5}
+                    d="M1 1l6 6m0-6L1 7"
+                  />
+                </svg>
+              </button>
+            </span>
+          ))}
         </div>
         <Input
           value={searchText}

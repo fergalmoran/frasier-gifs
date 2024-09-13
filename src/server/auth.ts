@@ -44,7 +44,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async jwt({ token, user }) {
-      if (!user || !user.email) {
+      if (!user?.email) {
         return token;
       }
       const u = await db
@@ -53,7 +53,7 @@ export const authOptions: NextAuthOptions = {
         .where(and(eq(users.email, user.email)))
         .limit(1);
 
-      if (!u || !u[0]) {
+      if (!u?.[0]) {
         if (user) {
           token.id = user?.id;
         }
