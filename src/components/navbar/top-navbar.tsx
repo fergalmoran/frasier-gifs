@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 import { useSelectedLayoutSegment } from "next/navigation";
 
 import LoginButton from "@/components/widgets/login/login-button";
+import { MobileNav } from "./mobile-navbar";
+import { buttonVariants } from "@/components/ui/button";
 
 type TopNavbarProps = {
   items: NavItem[];
@@ -19,6 +21,7 @@ type TopNavbarProps = {
 
 const TopNavbar: React.FC<TopNavbarProps> = ({ items, session }) => {
   const segment = useSelectedLayoutSegment();
+  const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
   return (
     <div className="mx-auto px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
       <div className="relative flex h-16 justify-between">
@@ -30,7 +33,13 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ items, session }) => {
                 {siteConfig.name}
               </span>
             </Link>
-
+            <Link
+              className={buttonVariants({ variant: "secondary" })}
+              href={"/upload"}
+            >
+              <Icons.upload className="mr-2 h-4 w-4" />
+              Upload
+            </Link>
             {items?.length ? (
               <nav className="hidden gap-6 md:flex">
                 {items?.map((item, index) => (
@@ -69,10 +78,20 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ items, session }) => {
             </div>
           </div>
         </div>
-        <div className="relative z-10 flex items-center lg:hidden">
-          Mobile menu
+        <div className="relative z-10 flex items-center md:hidden">
+          <button
+            className="flex items-center space-x-2 md:hidden"
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+          >
+            {showMobileMenu ? (
+              <Icons.close className="w-8" />
+            ) : (
+              <Icons.logo className="w-8" />
+            )}
+          </button>
+          {showMobileMenu && items && <MobileNav items={items} />}
         </div>
-        <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
+        <div className="hidden md:relative md:z-10 md:ml-4 md:flex md:items-center">
           <LoginButton session={session} />
         </div>
       </div>

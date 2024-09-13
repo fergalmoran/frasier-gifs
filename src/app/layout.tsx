@@ -14,6 +14,7 @@ import { dashboardConfig } from "@/config/top-nav.config";
 import { siteConfig } from "@/config/site.config";
 import { getServerSession } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import { GlobalPasteListener } from "@/components/global-paste-listener";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -36,6 +37,7 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const session = await getServerSession();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -53,8 +55,10 @@ export default async function RootLayout({
       >
         <TRPCReactProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <GlobalPasteListener />
             <Toaster />
             <TailwindIndicator />
+
             <TopNavbar items={dashboardConfig.mainNav} session={session} />
             <main className="m-4">{children}</main>
           </ThemeProvider>

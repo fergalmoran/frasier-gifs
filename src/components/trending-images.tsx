@@ -24,13 +24,6 @@ export function TrendingImages() {
       ) : (
         <p>No images yet.</p>
       )}
-
-      <ImageUpload
-        value="Farts"
-        onChange={(e) => {
-          console.log("trending-images", "uploading", e);
-        }}
-      />
     </div>
   );
 }

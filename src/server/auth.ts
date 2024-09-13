@@ -25,17 +25,47 @@ declare module "next-auth" {
     } & DefaultSession["user"];
   }
 }
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => {
-      const s = {
-        ...session,
-        user: {
-          ...session.user,
-        },
+    session: ({ token, session }) => {
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
+      }
+
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (!user || !user.email) {
+        return token;
+      }
+      const u = await db
+        .select()
+        .from(users)
+        .where(and(eq(users.email, user.email)))
+        .limit(1);
+
+      if (!u || !u[0]) {
+        if (user) {
+          token.id = user?.id;
+        }
+        return token;
+      }
+      const session = u[0];
+      return {
+        id: session.id,
+        name: session.name,
+        email: session.email,
+        picture: session.image,
       };
-      return s;
     },
   },
   session: {
@@ -70,7 +100,8 @@ export const authOptions: NextAuthOptions = {
         if (!(await bcrypt.compare(credentials.password, user[0]!.password!))) {
           return null;
         }
-        return { id: user[0]!.id, email: user[0]!.email };
+        const session = { id: user[0]!.id, email: user[0]!.email };
+        return session;
       },
     }),
   ],

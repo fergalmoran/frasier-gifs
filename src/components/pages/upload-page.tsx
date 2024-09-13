@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { env } from "@/env";
+import { logger } from "@/lib/logger";
+import { api } from "@/trpc/react";
+import { STATUS_CODES } from "http";
 
 type FormValues = {
   title: string;
@@ -23,31 +28,56 @@ type FormValues = {
 };
 
 const UploadPage: React.FC = () => {
+  const utils = api.useUtils();
   const router = useRouter();
   const form = useForm<FormValues>({
     defaultValues: {
-      title: "",
-      description: "",
+      title: env.NEXT_PUBLIC_DEBUG_MODE ? "This is my title" : "",
+      description: env.NEXT_PUBLIC_DEBUG_MODE ? "This is my description" : "",
       tags: [],
       image: undefined,
     },
   });
+  const createImage = api.image.create.useMutation({
+    onSuccess: async (e) => {
+      console.log("upload-page", "onSuccess", e);
+      const file = form.getValues().image;
+      if (e.id && file) {
+        const body = new FormData();
+        body.set("image", file);
+        body.set("id", e.id);
+        const response = await fetch("/api/upload/profile-image", {
+          method: "POST",
+          body,
+        });
+
+        await utils.image.invalidate();
+        router.replace("/");
+      } else {
+        //TODO: Probably need to delete the image from the database
+        logger.error("upload-page", "onSuccess", "Error uploading image");
+      }
+    },
+  });
+
   const _submit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
-    if (data.image) {
-      const body = new FormData();
-      body.append("title", data.title);
-      body.append("description", data.description);
-      body.append("tags", data.tags.join("|"));
-      body.append("file", data.image);
-      const response = await fetch("api/upload", {
-        method: "POST",
-        body,
-      });
-      if (response.status === 201) {
-        await router.replace("/");
-      }
+    try {
+      await createImage.mutateAsync(data);
+    } catch (error) {
+      logger.error("UploadPage", "error", error);
     }
+    // if (data.image) {
+    //   const body = new FormData();
+    //   body.append("file", data.image);
+    //   const response = await fetch("api/upload", {
+    //     method: "POST",
+    //     body,
+    //   });
+    //   if (response.status === 201) {
+    //     router.replace("/");
+    //   }
+    // }
   };
   return (
     <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -62,70 +92,68 @@ const UploadPage: React.FC = () => {
       <div className="md:col-span-2">
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(_submit)}>
-            <div className="shadow sm:overflow-hidden sm:rounded-md">
-              <div className="space-y-4 px-4">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  defaultValue={"fergal.moran+opengifame@gmail.com"}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input type="text" {...field} />
-                      </FormControl>
-                      {form.formState.errors.title && (
-                        <FormMessage>
-                          {form.formState.errors.title.message}
-                        </FormMessage>
-                      )}
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="description"
-                  defaultValue={"fergal.moran+opengifame@gmail.com"}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} rows={3} />
-                      </FormControl>
-                      {form.formState.errors.description && (
-                        <FormMessage>
-                          {form.formState.errors.description.message}
-                        </FormMessage>
-                      )}
-                    </FormItem>
-                  )}
-                />
-
-                <Controller
-                  control={form.control}
-                  name="image"
-                  render={({ field: { value, onChange } }) => (
-                    <ImageUpload value={value} onChange={onChange} />
-                  )}
-                />
-                <div className="divider pt-4">optional stuff</div>
-                <Controller
-                  control={form.control}
-                  name="tags"
-                  render={({ field: { value, onChange } }) => (
-                    <TaggedInput
-                      label="Tags"
-                      value={value}
-                      onChange={onChange}
-                    />
-                  )}
-                />
-              </div>
-              <div className="w-full px-4 py-3 text-right">
-                <button type="submit" className="btn btn-primary w-full">
-                  Upload Gif
-                </button>
-              </div>
+            <div className="space-y-4 px-4">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Let's give your post a title"
+                        type="text"
+                        {...field}
+                      />
+                    </FormControl>
+                    {form.formState.errors.title && (
+                      <FormMessage>
+                        {form.formState.errors.title.message}
+                      </FormMessage>
+                    )}
+                  </FormItem>
+                )}
+              />
+              <Controller
+                control={form.control}
+                name="image"
+                render={({ field: { value, onChange } }) => (
+                  <ImageUpload value={value} onChange={onChange} />
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                defaultValue={"fergal.moran+opengifame@gmail.com"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Add a description (if you want?)."
+                        {...field}
+                        rows={3}
+                      />
+                    </FormControl>
+                    {form.formState.errors.description && (
+                      <FormMessage>
+                        {form.formState.errors.description.message}
+                      </FormMessage>
+                    )}
+                  </FormItem>
+                )}
+              />
+              <div className="divider pt-4">optional stuff</div>
+              <Controller
+                control={form.control}
+                name="tags"
+                render={({ field: { value, onChange } }) => (
+                  <TaggedInput label="Tags" value={value} onChange={onChange} />
+                )}
+              />
+            </div>
+            <div className="w-full px-4 py-3 text-right">
+              <Button type="submit" className="btn btn-primary w-full">
+                Upload Gif
+              </Button>
             </div>
           </form>
         </FormProvider>

@@ -27,6 +27,7 @@ import {
   Terminal,
   LogIn,
   Upload,
+  Menu,
 } from "lucide-react";
 
 export type Icon = typeof LucideIcon;
@@ -111,6 +112,7 @@ export const Icons = {
       ></path>
     </svg>
   ),
+  hamburger: Menu,
   twitter: Twitter,
   check: Check,
   upload: Upload,

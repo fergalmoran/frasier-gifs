@@ -8,6 +8,7 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string().url(),
+    UPLOAD_PATH: z.string().default("uploads"),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -31,6 +32,8 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
+
+    NEXT_PUBLIC_DEBUG_MODE: z.boolean(),
     NEXT_PUBLIC_SITE_NAME: z.string().default("My Site"),
     NEXT_PUBLIC_SITE_DESCRIPTION: z.string().default("My site description"),
     NEXT_PUBLIC_SITE_URL: z.string().default("https://opengifame.com"),
@@ -47,11 +50,14 @@ export const env = createEnv({
    */
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
+    UPLOAD_PATH: process.env.UPLOAD_PATH,
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 
     NEXT_PUBLIC_SITE_NAME: process.env.NEXT_PUBLIC_SITE_NAME,
+    NEXT_PUBLIC_DEBUG_MODE:
+      process.env.NEXT_PUBLIC_DEBUG_MODE === "1" ? true : false,
     NEXT_PUBLIC_SITE_DESCRIPTION: process.env.NEXT_PUBLIC_SITE_NAME,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_NAME,
     NEXT_PUBLIC_SITE_OG_IMAGE: process.env.NEXT_PUBLIC_SITE_NAME,
