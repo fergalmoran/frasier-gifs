@@ -45,8 +45,7 @@ const UploadPage: React.FC = () => {
       if (e.id && file) {
         const body = new FormData();
         body.set("image", file);
-        body.set("id", e.id);
-        const response = await fetch("/api/upload/profile-image", {
+        const response = await fetch(`/api/upload/profile-image?${e.id}`, {
           method: "POST",
           body,
         });
