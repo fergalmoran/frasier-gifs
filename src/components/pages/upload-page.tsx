@@ -19,6 +19,8 @@ import { env } from "@/env";
 import { logger } from "@/lib/logger";
 import { api } from "@/trpc/react";
 import { STATUS_CODES } from "http";
+import { StatusCodes } from "http-status-codes";
+import { z } from "zod";
 
 type FormValues = {
   title: string;
@@ -38,6 +40,21 @@ const UploadPage: React.FC = () => {
       image: undefined,
     },
   });
+
+  // const imageSchema = z.object({
+  //   image: z
+  //     .any()
+  //     .refine((file) => {
+  //       if (file.size === 0 || file.name === undefined) return false;
+  //       else return true;
+  //     }, "Please update or add new image.")
+
+  //     .refine(
+  //       (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+  //       ".jpg, .jpeg, .png and .webp files are accepted.",
+  //     )
+  //     .refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
+  // });
   const createImage = api.image.create.useMutation({
     onSuccess: async (e) => {
       console.log("upload-page", "onSuccess", e);
@@ -45,13 +62,16 @@ const UploadPage: React.FC = () => {
       if (e.id && file) {
         const body = new FormData();
         body.set("image", file);
-        const response = await fetch(`/api/upload/profile-image?${e.id}`, {
+        const response = await fetch(`/api/upload/post?id=${e.id}`, {
           method: "POST",
           body,
         });
-
-        await utils.image.invalidate();
-        router.replace("/");
+        if (response.status === StatusCodes.CREATED) {
+          await utils.image.invalidate();
+          router.replace("/");
+        }
+        logger.error("upload-page", "createImage", response.statusText);
+        throw new Error(response.statusText);
       } else {
         //TODO: Probably need to delete the image from the database
         logger.error("upload-page", "onSuccess", "Error uploading image");

@@ -3,7 +3,6 @@
 import { useState } from "react";
 
 import { api } from "@/trpc/react";
-import ImageUpload from "./widgets/image-upload";
 
 export function TrendingImages() {
   const [latestPost] = api.post.getLatest.useSuspenseQuery();
