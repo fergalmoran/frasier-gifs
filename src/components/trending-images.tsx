@@ -3,23 +3,24 @@
 import { useState } from "react";
 
 import { api } from "@/trpc/react";
+import Image from "next/image";
 
 export function TrendingImages() {
-  const [latestPost] = api.post.getLatest.useSuspenseQuery();
-
-  const utils = api.useUtils();
-  const [name, setName] = useState("");
-  const createPost = api.post.create.useMutation({
-    onSuccess: async () => {
-      await utils.post.invalidate();
-      setName("");
-    },
-  });
+  const [latestImages] = api.image.getTrending.useSuspenseQuery();
 
   return (
     <div className="w-full max-w-xs">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
+      {latestImages ? (
+        latestImages.map((image) => (
+          // <Image
+          //   key={image.id}
+          //   src={image.url}
+          //   alt={image.title ?? "An image"}
+          //   width={320}
+          //   height={320}
+          // />
+          <img src={image.url} />
+        ))
       ) : (
         <p>No images yet.</p>
       )}

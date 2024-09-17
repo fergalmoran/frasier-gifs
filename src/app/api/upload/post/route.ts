@@ -3,12 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { env } from "@/env";
 import { type NextRequest, NextResponse } from "next/server";
 import fs from "fs";
-import { pipeline } from "stream";
-import { promisify } from "util";
 import path from "path";
-import { FilePen } from "lucide-react";
-import { fileURLToPath } from "url";
-const pump = promisify(pipeline);
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession();

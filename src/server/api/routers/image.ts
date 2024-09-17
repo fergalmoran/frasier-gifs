@@ -1,6 +1,11 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { z } from "zod";
 import { images } from "@/server/db/schema";
+import { env } from "@/env";
 
 const imageCreateType = {
   title: z.string().min(5),
@@ -9,6 +14,20 @@ const imageCreateType = {
 };
 
 export const imageRouter = createTRPCRouter({
+  getTrending: publicProcedure.query(async ({ ctx }) => {
+    const trending = await ctx.db.query.images.findMany({
+      orderBy: (images, { desc }) => [desc(images.createdAt)],
+    });
+    return trending.map(t => {
+      return {
+        id: t.id,
+        title: t.title,
+        description: t.description,
+        tags: t.tags,
+        url: `${env.IMAGE_BASE_URL}/${t.id}`,
+      };
+    }) ?? null;
+  }),
   create: protectedProcedure
     .input(z.object(imageCreateType))
     .mutation(async ({ ctx, input }) => {

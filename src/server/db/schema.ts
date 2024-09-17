@@ -13,7 +13,7 @@ import { type AdapterAccount } from "next-auth/adapters";
 
 export const createTable = pgTableCreator((name) => `${name}`);
 
-export const images = createTable("image", {
+export const images = createTable("images", {
   id: varchar("id", { length: 255 })
     .notNull()
     .primaryKey()
@@ -32,31 +32,7 @@ export const images = createTable("image", {
   ),
 });
 
-export const posts = createTable(
-  "post",
-  {
-    id: varchar("id", { length: 255 })
-      .notNull()
-      .primaryKey()
-      .$defaultFn(() => crypto.randomUUID()),
-    name: varchar("name", { length: 256 }),
-    createdById: varchar("created_by", { length: 255 })
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date(),
-    ),
-  },
-  (example) => ({
-    createdByIdIdx: index("created_by_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
-  }),
-);
-
-export const users = createTable("user", {
+export const users = createTable("users", {
   id: varchar("id", { length: 255 })
     .notNull()
     .primaryKey()
@@ -76,7 +52,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 }));
 
 export const accounts = createTable(
-  "account",
+  "accounts",
   {
     userId: varchar("user_id", { length: 255 })
       .notNull()
@@ -109,7 +85,7 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 }));
 
 export const sessions = createTable(
-  "session",
+  "sessions",
   {
     sessionToken: varchar("session_token", { length: 255 })
       .notNull()
@@ -132,7 +108,7 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 }));
 
 export const verificationTokens = createTable(
-  "verification_token",
+  "verification_tokens",
   {
     identifier: varchar("identifier", { length: 255 }).notNull(),
     token: varchar("token", { length: 255 }).notNull(),

@@ -12,6 +12,9 @@ const config = {
         hostname: "avatars.githubusercontent.com",
       },
       {
+        hostname: "opengifame.dev.fergl.ie",
+      },
+      {
         hostname: "localhost",
       },
     ],
