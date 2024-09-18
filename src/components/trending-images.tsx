@@ -19,7 +19,7 @@ export function TrendingImages() {
           //   width={320}
           //   height={320}
           // />
-          <img src={image.url} />
+          <img src={image.url} key={image.id} />
         ))
       ) : (
         <p>No images yet.</p>
