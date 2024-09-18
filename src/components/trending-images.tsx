@@ -1,29 +1,41 @@
-"use client";
+import { BellIcon } from "@radix-ui/react-icons";
 
-import { useState } from "react";
+import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
+import { api } from "@/trpc/server";
 
-import { api } from "@/trpc/react";
-import Image from "next/image";
+const createGridCard = (
+  key: string,
+  url: string,
+  title: string,
+  description: string,
+  tags: string[],
+) => {
+  const value = {
+    Icon: BellIcon,
+    name: title,
+    description: description,
+    href: "/",
+    cta: "Learn more",
+    background: <img className="h-128 absolute w-full" src={url} />,
+    className: "col-span-1 row-start-1 row-end-4",
+  };
 
-export function TrendingImages() {
-  const [latestImages] = api.image.getTrending.useSuspenseQuery();
+  return <BentoCard key={key} {...value} />;
+};
 
+export async function TrendingImages() {
+  const latestImages = await api.image.getTrending();
   return (
-    <div className="w-full max-w-xs">
-      {latestImages ? (
-        latestImages.map((image) => (
-          <Image
-            key={image.id}
-            src={image.url}
-            alt={image.title ?? "An image"}
-            width={320}
-            height={320}
-          />
-          // <img src={image.url} key={image.id} />
-        ))
-      ) : (
-        <p>No images yet.</p>
+    <BentoGrid className="lg:grid-rows-3">
+      {latestImages.map((image) =>
+        createGridCard(
+          image.id,
+          image.url,
+          image.title ?? "",
+          image.description ?? "",
+          image.tags ?? [],
+        ),
       )}
-    </div>
+    </BentoGrid>
   );
 }
