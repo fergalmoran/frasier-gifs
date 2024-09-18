@@ -1,5 +1,5 @@
 {
-  "id": "c81af722-c72f-46d8-9457-c8ece996a058",
+  "id": "f7541b9a-140c-4795-a672-4d0c80b56ef1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -143,6 +143,12 @@
         "tags": {
           "name": "tags",
           "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "filepath": {
+          "name": "filepath",
+          "type": "varchar(256)",
           "primaryKey": false,
           "notNull": false
         },

@@ -34,5 +34,8 @@ const params = (url: string) => {
 };
 export async function middleware(request: NextRequest, response: NextResponse) {
   const { id } = params(request.url) as { id?: string };
+  if (!id) {
+    return NextResponse.next();
+  }
   return NextResponse.rewrite(new URL(`/uploads/${id}`, request.url));
 }

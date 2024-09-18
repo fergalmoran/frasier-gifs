@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS "images" (
 	"title" varchar(256),
 	"description" varchar,
 	"tags" text[],
+	"filepath" varchar(256),
 	"created_by" varchar(255) NOT NULL,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updated_at" timestamp with time zone

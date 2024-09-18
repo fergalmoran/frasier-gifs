@@ -18,15 +18,17 @@ export const imageRouter = createTRPCRouter({
     const trending = await ctx.db.query.images.findMany({
       orderBy: (images, { desc }) => [desc(images.createdAt)],
     });
-    return trending.map(t => {
-      return {
-        id: t.id,
-        title: t.title,
-        description: t.description,
-        tags: t.tags,
-        url: `${env.IMAGE_BASE_URL}/${t.id}`,
-      };
-    }) ?? null;
+    return (
+      trending.map((t) => {
+        return {
+          id: t.id,
+          title: t.title,
+          description: t.description,
+          tags: t.tags,
+          url: `${env.IMAGE_BASE_URL}/${t.filePath}`,
+        };
+      }) ?? null
+    );
   }),
   create: protectedProcedure
     .input(z.object(imageCreateType))

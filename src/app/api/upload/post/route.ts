@@ -4,6 +4,9 @@ import { env } from "@/env";
 import { type NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { db } from "@/server/db";
+import { images } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession();
@@ -32,6 +35,9 @@ export async function POST(request: NextRequest) {
     const filePath = `${id}${extension}`;
 
     fs.writeFileSync(path.resolve(env.UPLOAD_PATH, filePath), buffer);
+
+    await db.update(images).set({ filePath }).where(eq(images.id, id));
+
     return NextResponse.json({
       success: true,
       url: env.NEXT_PUBLIC_SITE_URL + `/i/${filePath}`,
