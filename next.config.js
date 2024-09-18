@@ -4,9 +4,6 @@
  */
 await import("./src/env.js");
 
-const withImages = require('next-images')
-module.exports = withImages()
-
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
@@ -22,7 +19,14 @@ const config = {
       },
     ],
   },
-  transpilePackages: ["@t3-oss/env-nextjs", "@t3-oss/env-core"],
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/i/:path*",
+  //       destination: "https://your-custom-image-location.com/:path*", // Replace with your custom location
+  //     },
+  //   ];
+  // },
 };
 
 export default config;

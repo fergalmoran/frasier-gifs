@@ -21,6 +21,7 @@ export const images = createTable("images", {
   title: varchar("title", { length: 256 }),
   description: varchar("description"),
   tags: text("tags").array(),
+  filePath: varchar("filepath", { length: 256 }),
   createdById: varchar("created_by", { length: 255 })
     .notNull()
     .references(() => users.id),
