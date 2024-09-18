@@ -12,14 +12,14 @@ export function TrendingImages() {
     <div className="w-full max-w-xs">
       {latestImages ? (
         latestImages.map((image) => (
-          // <Image
-          //   key={image.id}
-          //   src={image.url}
-          //   alt={image.title ?? "An image"}
-          //   width={320}
-          //   height={320}
-          // />
-          <img src={image.url} key={image.id} />
+          <Image
+            key={image.id}
+            src={image.url}
+            alt={image.title ?? "An image"}
+            width={320}
+            height={320}
+          />
+          // <img src={image.url} key={image.id} />
         ))
       ) : (
         <p>No images yet.</p>
