@@ -15,7 +15,6 @@ const UserNavDropdown: React.FC<IUserNavDropdownProps> = ({ session }) => {
     session?.user?.image || "/images/default-profile.jpg",
   );
   React.useEffect(() => {
-    logger.debug("UserNavDropdown", "session", session);
     setProfileImage(session?.user?.image || "/images/default-profile.jpg");
   }, [session]);
 

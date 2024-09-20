@@ -52,7 +52,7 @@ const UploadPage: React.FC = () => {
   //     )
   //     .refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
   // });
-  const createImage = api.image.create.useMutation({
+  const createImage = api.post.create.useMutation({
     onSuccess: async (e) => {
       console.log("upload-page", "onSuccess", e);
       const file = form.getValues().image;
@@ -64,7 +64,7 @@ const UploadPage: React.FC = () => {
           body,
         });
         if (response.status === StatusCodes.CREATED) {
-          await utils.image.invalidate();
+          await utils.post.invalidate();
           router.replace("/");
         }
         logger.error("upload-page", "createImage", response.statusText);

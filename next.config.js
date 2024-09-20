@@ -15,6 +15,9 @@ const config = {
         hostname: "opengifame.dev.fergl.ie",
       },
       {
+        hostname: "cloudflare-ipfs.com",
+      },
+      {
         hostname: "localhost",
       },
     ],

@@ -1,5 +1,5 @@
 {
-  "id": "f7541b9a-140c-4795-a672-4d0c80b56ef1",
+  "id": "6010a064-33aa-404b-b933-c4ca1f1c415d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -128,6 +128,12 @@
           "primaryKey": true,
           "notNull": true
         },
+        "slug": {
+          "name": "slug",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "title": {
           "name": "title",
           "type": "varchar(256)",
@@ -172,7 +178,38 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "image_user_id_idx": {
+          "name": "image_user_id_idx",
+          "columns": [
+            {
+              "expression": "created_by",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "image_slug_idx": {
+          "name": "image_slug_idx",
+          "columns": [
+            {
+              "expression": "slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "images_created_by_users_id_fk": {
           "name": "images_created_by_users_id_fk",
@@ -189,7 +226,15 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "images_slug_unique": {
+          "name": "images_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      }
     },
     "public.sessions": {
       "name": "sessions",
