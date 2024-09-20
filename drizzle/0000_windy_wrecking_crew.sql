@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS "accounts" (
 	CONSTRAINT "accounts_provider_provider_account_id_pk" PRIMARY KEY("provider","provider_account_id")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "images" (
+CREATE TABLE IF NOT EXISTS "posts" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"slug" varchar(255) NOT NULL,
 	"title" varchar(256),
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS "images" (
 	"created_by" varchar(255) NOT NULL,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updated_at" timestamp with time zone,
-	CONSTRAINT "images_slug_unique" UNIQUE("slug")
+	CONSTRAINT "posts_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "sessions" (
@@ -55,7 +55,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "images" ADD CONSTRAINT "images_created_by_users_id_fk" FOREIGN KEY ("created_by") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "posts" ADD CONSTRAINT "posts_created_by_users_id_fk" FOREIGN KEY ("created_by") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -67,6 +67,6 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "account_user_id_idx" ON "accounts" USING btree ("user_id");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "image_user_id_idx" ON "images" USING btree ("created_by");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "image_slug_idx" ON "images" USING btree ("slug");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "image_user_id_idx" ON "posts" USING btree ("created_by");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "image_slug_idx" ON "posts" USING btree ("slug");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "session_user_id_idx" ON "sessions" USING btree ("user_id");

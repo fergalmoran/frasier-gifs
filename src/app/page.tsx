@@ -1,5 +1,5 @@
 import LandingPage from "@/components/pages/landing-page";
-import { TrendingImages } from "@/components/trending-images";
+import { TrendingPosts } from "@/components/trending-posts";
 import { getServerAuthSession } from "@/server/auth";
 import { api, HydrateClient } from "@/trpc/server";
 
@@ -9,7 +9,7 @@ export default async function Home() {
 
   return (
     <HydrateClient>
-      {session?.user ? <TrendingImages /> : <LandingPage />}
+      {session?.user ? <TrendingPosts /> : <LandingPage />}
     </HydrateClient>
   );
 }
