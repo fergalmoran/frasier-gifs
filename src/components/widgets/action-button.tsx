@@ -4,24 +4,18 @@ import { Button } from "@/components/ui/button";
 
 type ActionButtonProps = {
   title: string;
-  action: () => void;
+  action: React.MouseEventHandler<HTMLDivElement>;
   icon: React.ReactNode;
 };
 
 const ActionButton: React.FC<ActionButtonProps> = ({ title, action, icon }) => {
   return (
-    <Button
-      variant={"ghost"}
-      size="icon"
-      className="z-50 w-4"
-      title={title}
-      onClick={($e) => {
-        $e.preventDefault();
-        action();
-      }}
+    <div
+      onClick={action}
+      className="cursor-pointer hover:text-primary-foreground"
     >
       {icon}
-    </Button>
+    </div>
   );
 };
 

@@ -29,7 +29,7 @@ export const postRouter = createTRPCRouter({
         title: image.title,
         description: image.description,
         tags: image.tags,
-        imageUrl: `${env.IMAGE_BASE_URL}/${image.filePath}`,
+        imageUrl: `/i/${image.filePath}`,
         likes: 0,
         dislikes: 0,
       } as Post;
@@ -45,7 +45,7 @@ export const postRouter = createTRPCRouter({
           title: t.title,
           description: t.description,
           tags: t.tags,
-          imageUrl: `${env.IMAGE_BASE_URL}/${t.filePath}`,
+          imageUrl: `/i/${t.filePath}`,
           likes: 0,
           dislikes: 0,
         } as Post;
