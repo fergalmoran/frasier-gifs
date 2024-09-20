@@ -1,12 +1,12 @@
 import React from "react";
 import { Post } from "@/lib/models/post";
 
-type ImagePageProps = {
+type PostPageProps = {
   post: Post;
 };
 
-const ImagePage: React.FC<ImagePageProps> = ({ post }) => {
+const PostPage: React.FC<PostPageProps> = ({ post }) => {
   return <div>{post.title}</div>;
 };
 
-export default ImagePage;
+export default PostPage;

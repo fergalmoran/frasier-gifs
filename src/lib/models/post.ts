@@ -1,8 +1,10 @@
 export type Post = {
-    slug: string;
-    title: string;
-    description: string;
-    likes: number;
-    dislikes: number;
-    datePosted: Date;
-}
+  slug: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  likes: number;
+  tags: string[];
+  dislikes: number;
+  datePosted: Date;
+};

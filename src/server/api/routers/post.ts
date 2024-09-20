@@ -8,8 +8,9 @@ import { z } from "zod";
 import { images, users } from "@/server/db/schema";
 import { env } from "@/env";
 import { and, eq } from "drizzle-orm";
+import { Post } from "@/lib/models/post";
 
-export const imageRouter = createTRPCRouter({
+export const postRouter = createTRPCRouter({
   getBySlug: publicProcedure
     .input(z.object({ slug: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -24,12 +25,14 @@ export const imageRouter = createTRPCRouter({
         throw new Error("Image not found");
       }
       return {
-        id: image.id,
+        slug: image.id,
         title: image.title,
         description: image.description,
         tags: image.tags,
-        url: `${env.IMAGE_BASE_URL}/${image.filePath}`,
-      };
+        imageUrl: `${env.IMAGE_BASE_URL}/${image.filePath}`,
+        likes: 0,
+        dislikes: 0,
+      } as Post;
     }),
   getTrending: publicProcedure.query(async ({ ctx }) => {
     const trending = await ctx.db.query.images.findMany({
@@ -38,12 +41,14 @@ export const imageRouter = createTRPCRouter({
     return (
       trending.map((t) => {
         return {
-          id: t.id,
+          slug: t.slug,
           title: t.title,
           description: t.description,
           tags: t.tags,
-          url: `${env.IMAGE_BASE_URL}/${t.filePath}`,
-        };
+          imageUrl: `${env.IMAGE_BASE_URL}/${t.filePath}`,
+          likes: 0,
+          dislikes: 0,
+        } as Post;
       }) ?? null
     );
   }),
