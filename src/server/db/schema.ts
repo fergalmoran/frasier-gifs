@@ -13,25 +13,35 @@ import { type AdapterAccount } from "next-auth/adapters";
 
 export const createTable = pgTableCreator((name) => `${name}`);
 
-export const images = createTable("images", {
-  id: varchar("id", { length: 255 })
-    .notNull()
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
-  title: varchar("title", { length: 256 }),
-  description: varchar("description"),
-  tags: text("tags").array(),
-  filePath: varchar("filepath", { length: 256 }),
-  createdById: varchar("created_by", { length: 255 })
-    .notNull()
-    .references(() => users.id),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-    () => new Date(),
-  ),
-});
+export const images = createTable(
+  "images",
+  {
+    id: varchar("id", { length: 255 })
+      .notNull()
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    slug: varchar("slug", { length: 255 }).notNull().unique(),
+    title: varchar("title", { length: 256 }),
+    description: varchar("description"),
+    tags: text("tags").array(),
+    filePath: varchar("filepath", { length: 256 }),
+    createdById: varchar("created_by", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+      () => new Date(),
+    ),
+  },
+  (table) => {
+    return {
+      userIndex: index("image_user_id_idx").on(table.createdById),
+      slugIndex: index("image_slug_idx").on(table.slug),
+    };
+  },
+);
 
 export const users = createTable("users", {
   id: varchar("id", { length: 255 })
