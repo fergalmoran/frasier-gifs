@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Form, FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { SubmitHandler, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import ImageUpload from "@/components/widgets/image-upload";
@@ -9,7 +9,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -18,9 +17,7 @@ import { Button } from "@/components/ui/button";
 import { env } from "@/env";
 import { logger } from "@/lib/logger";
 import { api } from "@/trpc/react";
-import { STATUS_CODES } from "http";
 import { StatusCodes } from "http-status-codes";
-import { z } from "zod";
 
 type FormValues = {
   title: string;

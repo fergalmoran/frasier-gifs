@@ -28,6 +28,8 @@ import {
   LogIn,
   Upload,
   Menu,
+  ThumbsUp,
+  ThumbsDown,
 } from "lucide-react";
 
 export type Icon = typeof LucideIcon;
@@ -38,6 +40,8 @@ export const Icons = {
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
   trash: Trash,
+  up: ThumbsUp,
+  down: ThumbsDown,
   post: FileText,
   page: File,
   media: Image,

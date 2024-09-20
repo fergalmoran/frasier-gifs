@@ -1,3 +1,4 @@
+"use client"
 import UploadPage from "@/components/pages/upload-page";
 
 const Upload = () => (
