@@ -19,16 +19,22 @@ const PostActions: React.FC<PostActionsProps> = ({ post }) => {
           await vote.mutateAsync({ slug: post.slug, up: true });
           voteCount.refetch();
         }}
-        icon={<Icons.up className="h-8 w-8" />}
+        icon={<Icons.up className="h-6 w-6" />}
       />
-      <div>{voteCount.data ? voteCount.data.toString() : "Loading..."}</div>
+      <div>
+        {voteCount.data ? (
+          voteCount.data.toString()
+        ) : (
+          <Icons.spinner className="animate-spin" />
+        )}
+      </div>
       <ActionButton
         title="Downvote"
         action={async () => {
           await vote.mutateAsync({ slug: post.slug, up: false });
           voteCount.refetch();
         }}
-        icon={<Icons.down className="h-8 w-8" />}
+        icon={<Icons.down className="h-6 w-6" />}
       />
       <ActionButton
         title="Favourite"
@@ -36,7 +42,7 @@ const PostActions: React.FC<PostActionsProps> = ({ post }) => {
           await vote.mutateAsync({ slug: post.slug, up: false });
           voteCount.refetch();
         }}
-        icon={<Icons.heart className="h-8 w-8" />}
+        icon={<Icons.heart className="h-6 w-6" />}
       />
     </div>
   );
