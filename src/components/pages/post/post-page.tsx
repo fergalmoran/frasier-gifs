@@ -7,10 +7,12 @@ type PostPageProps = {
 
 const PostPage: React.FC<PostPageProps> = ({ post }) => {
   return (
-    <div className="grid grid-cols-3">
-      <div id="left"></div>
-      <div id="centre">
-        <div className="flex max-w-lg flex-col justify-center">
+    <div className="flex h-full w-full items-stretch space-x-4">
+      <div id="left" className="w-1/6 flex-none">
+        Left Stuff
+      </div>
+      <div id="centre" className="flex-grow justify-between">
+        <div className="">
           <img
             src={post.imageUrl}
             className="w-full overflow-hidden rounded-lg border shadow"
@@ -21,7 +23,9 @@ const PostPage: React.FC<PostPageProps> = ({ post }) => {
           </div>
         </div>
       </div>
-      <div id="right"></div>
+      <div id="right" className="w-1/6 flex-none">
+        Right Stuff
+      </div>
     </div>
   );
 };
