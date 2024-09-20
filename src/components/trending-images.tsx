@@ -19,7 +19,7 @@ export const TrendingImages: React.FC = async () => {
   return latestImages.length !== 0 ? (
     <div className="masonry sm:masonry-sm md:masonry-md">
       {latestImages.map((image) => (
-        <Link href={`/image/${image.slug}`} key={image.slug}>
+        <Link href={`/post/${image.slug}`} key={image.slug}>
           <div className="break-inside rounded-lg">
             <div className="relative m-6 flex-shrink-0 overflow-hidden rounded-lg bg-muted shadow-lg hover:bg-accent">
               <div className="relative flex items-center justify-center px-2 pt-4">
