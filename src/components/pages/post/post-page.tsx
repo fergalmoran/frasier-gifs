@@ -17,12 +17,9 @@ const PostPage: React.FC<PostPageProps> = ({ post }) => {
           <PostActions post={post} />
         </div>
       </div>
-      <div id="centre" className="flex-grow justify-between">
-        <div className="">
-          <img
-            src={post.imageUrl}
-            className="w-full overflow-hidden rounded-lg border shadow"
-          />
+      <div id="centre" className="flex-grow">
+        <div className="flex justify-center">
+          <img src={post.imageUrl} className="m-h-full m-w-full absolute" />
           <div className="mt-8">
             <h4 className="text-xl font-bold">{post.title}</h4>
             <p className="mt-2 text-gray-600">{post.description}</p>
