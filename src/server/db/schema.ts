@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
   index,
   integer,
   pgTableCreator,
@@ -13,8 +14,8 @@ import { type AdapterAccount } from "next-auth/adapters";
 
 export const createTable = pgTableCreator((name) => `${name}`);
 
-export const images = createTable(
-  "images",
+export const posts = createTable(
+  "posts",
   {
     id: varchar("id", { length: 255 })
       .notNull()
@@ -43,6 +44,26 @@ export const images = createTable(
   },
 );
 
+export const votes = createTable("votes", {
+  id: varchar("id", { length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  postId: varchar("post_id", { length: 255 })
+    .notNull()
+    .references(() => posts.id),
+  up: boolean("up").notNull().default(true),
+  createdById: varchar("created_by", { length: 255 })
+    .notNull()
+    .references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+});
+
 export const users = createTable("users", {
   id: varchar("id", { length: 255 })
     .notNull()
@@ -60,6 +81,8 @@ export const users = createTable("users", {
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
+  posts: many(posts),
+  votes: many(votes),
 }));
 
 export const accounts = createTable(
