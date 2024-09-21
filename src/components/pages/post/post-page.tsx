@@ -18,12 +18,16 @@ const PostPage: React.FC<PostPageProps> = ({ post }) => {
         </div>
       </div>
       <div id="centre" className="flex-grow">
-        <div className="flex justify-center">
-          <img src={post.imageUrl} className="m-h-full m-w-full absolute" />
-          <div className="mt-8">
-            <h4 className="text-xl font-bold">{post.title}</h4>
-            <p className="mt-2 text-gray-600">{post.description}</p>
+        <div>
+          <div className="flex flex-col">
+            <div className="flex justify-center p-4">
+              <img src={post.imageUrl} className="object-cover" />
+            </div>
           </div>
+        </div>
+        <div className="mt-8">
+          <h4 className="text-xl font-bold">{post.title}</h4>
+          <p className="mt-2 text-gray-600">{post.description}</p>
         </div>
       </div>
       <div id="right" className="w-1/6 flex-none">
