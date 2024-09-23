@@ -12,7 +12,7 @@ const PostActions: React.FC<PostActionsProps> = ({ post }) => {
   const vote = api.post.vote.useMutation();
   const voteCount = api.post.getVoteCount.useQuery({ slug: post.slug });
   return (
-    <div className="flex flex-col items-center space-y-4 border p-4 shadow-lg">
+    <div className="flex flex-col items-center space-y-4 rounded-md border p-4">
       <ActionButton
         title="Upvote"
         action={async () => {

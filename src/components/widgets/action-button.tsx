@@ -10,10 +10,7 @@ type ActionButtonProps = {
 
 const ActionButton: React.FC<ActionButtonProps> = ({ title, action, icon }) => {
   return (
-    <div
-      onClick={action}
-      className="cursor-pointer hover:text-primary-foreground"
-    >
+    <div onClick={action} className="cursor-pointer hover:text-primary">
       {icon}
     </div>
   );

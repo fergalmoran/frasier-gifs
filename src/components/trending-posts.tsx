@@ -4,6 +4,14 @@ import Link from "next/link";
 import { Icons } from "./icons";
 import ActionButton from "./widgets/action-button";
 import { Post } from "@/lib/models/post";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "./ui/button";
 
 const upvote = async () => {
   "use server";
@@ -19,45 +27,36 @@ export const TrendingPosts: React.FC = async () => {
   return trendingPosts.length !== 0 ? (
     <div className="masonry sm:masonry-sm md:masonry-md">
       {trendingPosts.map((post: Post) => (
-        <Link href={`/post/${post.slug}`} key={post.slug}>
-          <div className="break-inside rounded-lg">
-            <div className="relative m-6 flex-shrink-0 overflow-hidden rounded-lg bg-muted shadow-lg hover:bg-accent">
-              <div className="relative flex items-center justify-center px-2 pt-4">
+        <div className="p-4">
+          <Link href={`/post/${post.slug}`} key={post.slug}>
+            <Card className="overflow-hidden">
+              <CardHeader className="p-0">
                 <img
-                  className="h-auto max-w-full rounded-lg"
                   src={post.imageUrl}
-                  alt={post.description ?? "An image"}
+                  alt={post.title}
+                  className="h-auto w-full object-cover"
                 />
-              </div>
-              <div className="relative mt-6 space-y-2 px-6">
-                <span className="text-md block font-semibold">
-                  {post.title}
-                </span>
-                <div className="flex justify-between pb-2">
-                  <div className="pr-2">
-                    <div className="line-clamp-1 align-middle text-sm opacity-75">
-                      {post.description}
-                    </div>
-                  </div>
-                  <span className="block items-center rounded-full text-xs font-bold leading-none">
-                    <div className="flex space-x-1">
-                      <ActionButton
-                        title="Upvote"
-                        action={upvote}
-                        icon={<Icons.up />}
-                      />
-                      <ActionButton
-                        title="Downvote"
-                        action={downvote}
-                        icon={<Icons.down />}
-                      />
-                    </div>
-                  </span>
+              </CardHeader>
+              <CardContent className="p-4">
+                <CardTitle>{post.title}</CardTitle>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {post.description}
+                </p>
+              </CardContent>
+              <CardFooter className="flex items-center justify-between p-4">
+                <div className="flex items-center space-x-2">
+                  <Button variant="outline" size="icon">
+                    <Icons.up className="h-4 w-4" />
+                  </Button>
+                  <Button variant="outline" size="icon">
+                    <Icons.down className="h-4 w-4" />
+                  </Button>
                 </div>
-              </div>
-            </div>
-          </div>
-        </Link>
+                <span className="font-semibold">{post.likes} votes</span>
+              </CardFooter>
+            </Card>
+          </Link>
+        </div>
       ))}
     </div>
   ) : (
