@@ -3,6 +3,7 @@ import React from "react";
 import ActionButton from "@/components/widgets/action-button";
 import { Icons } from "@/components/icons";
 import { api } from "@/trpc/react";
+import VoteCount from "@/components/widgets/vote-count";
 
 type PostActionsProps = {
   post: Post;
@@ -21,13 +22,7 @@ const PostActions: React.FC<PostActionsProps> = ({ post }) => {
         }}
         icon={<Icons.up className="h-6 w-6" />}
       />
-      <div>
-        {voteCount.data ? (
-          voteCount.data.toString()
-        ) : (
-          <Icons.spinner className="animate-spin" />
-        )}
-      </div>
+      <VoteCount post={post} />
       <ActionButton
         title="Downvote"
         action={async () => {

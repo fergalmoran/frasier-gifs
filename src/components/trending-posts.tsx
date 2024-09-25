@@ -2,7 +2,6 @@ import { api } from "@/trpc/server";
 import BlurIn from "./magicui/blur-in";
 import Link from "next/link";
 import { Icons } from "./icons";
-import ActionButton from "./widgets/action-button";
 import { Post } from "@/lib/models/post";
 import {
   Card,
@@ -12,22 +11,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "./ui/button";
-
-const upvote = async () => {
-  "use server";
-  console.log("trending-posts", "upvote");
-};
-const downvote = async () => {
-  "use server";
-  console.log("trending-posts", "downvote");
-};
+import VoteCount from "./widgets/vote-count";
 
 export const TrendingPosts: React.FC = async () => {
   const trendingPosts = await api.post.getTrending();
   return trendingPosts.length !== 0 ? (
-    <div className="masonry sm:masonry-sm md:masonry-md">
+    <div className="masonry sm:masonry-sm md:masonry-md lg:masonry-lg">
       {trendingPosts.map((post: Post) => (
-        <div className="p-4">
+        <div className="py-2">
           <Link href={`/post/${post.slug}`} key={post.slug}>
             <Card className="overflow-hidden">
               <CardHeader className="p-0">
@@ -38,21 +29,22 @@ export const TrendingPosts: React.FC = async () => {
                 />
               </CardHeader>
               <CardContent className="p-4">
-                <CardTitle>{post.title}</CardTitle>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <CardTitle className="text-sm">{post.title}</CardTitle>
+                <p className="mt-2 line-clamp-1 text-xs text-muted-foreground lg:line-clamp-2">
                   {post.description}
                 </p>
               </CardContent>
-              <CardFooter className="flex items-center justify-between p-4">
-                <div className="flex items-center space-x-2">
-                  <Button variant="outline" size="icon">
-                    <Icons.up className="h-4 w-4" />
+              <CardFooter className="flex items-center justify-between px-1 text-xs">
+                <div className="flex items-center space-x-1">
+                  <Button variant="ghost" size="sm">
+                    <Icons.up className="h-2 w-2" />
                   </Button>
-                  <Button variant="outline" size="icon">
-                    <Icons.down className="h-4 w-4" />
+                  <VoteCount post={post} />
+                  <Button variant="ghost" size="sm">
+                    <Icons.down className="h-2 w-2" />
                   </Button>
                 </div>
-                <span className="font-semibold">{post.likes} votes</span>
+                <span className="font-semibold"></span>
               </CardFooter>
             </Card>
           </Link>
