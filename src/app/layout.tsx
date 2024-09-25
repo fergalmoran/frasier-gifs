@@ -14,7 +14,7 @@ import { dashboardConfig } from "@/config/top-nav.config";
 import { siteConfig } from "@/config/site.config";
 import { getServerSession } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import { GlobalPasteListener } from "@/components/global-paste-listener";
+import { ClipboardListener } from "@/components/clipboard-listener";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -55,7 +55,7 @@ export default async function RootLayout({
       >
         <TRPCReactProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <GlobalPasteListener />
+            <ClipboardListener />
             <Toaster />
             <TailwindIndicator />
 
