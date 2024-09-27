@@ -20,7 +20,7 @@ const Upload = () => {
       setLoading(false);
       console.log("page", "set-file", clipboardContext?.file);
     } else {
-      if (c === "1") {
+      if (c !== "1") {
         setLoading(false);
       }
     }
@@ -31,9 +31,7 @@ const Upload = () => {
       (c === "1" && clipboardContext?.file != null && !loading) ||
       c !== "1"
     ) {
-      return clipboardContext?.file ? (
-        <UploadPage file={clipboardContext?.file} />
-      ) : null;
+      return <UploadPage file={clipboardContext?.file ?? undefined} />;
     }
     if (c === "1" && loading) {
       return <Loading />;
