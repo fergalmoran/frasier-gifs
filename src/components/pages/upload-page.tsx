@@ -26,9 +26,11 @@ type FormValues = {
   image: string | undefined;
 };
 
-const UploadPage: React.FC = () => {
+type UploadPageProps = {
+  file?: File;
+};
+const UploadPage: React.FC<UploadPageProps> = ({ file }) => {
   const utils = api.useUtils();
-  const router = useRouter();
   const form = useForm<FormValues>({
     defaultValues: {
       title: env.NEXT_PUBLIC_DEBUG_MODE ? "This is my title" : "",
@@ -37,7 +39,11 @@ const UploadPage: React.FC = () => {
       image: undefined,
     },
   });
-
+  if (file) {
+    logger.log("upload-page", "We gotta file", file);
+  } else {
+    logger.log("upload-page", "No file");
+  }
   // const imageSchema = z.object({
   //   image: z
   //     .any()
