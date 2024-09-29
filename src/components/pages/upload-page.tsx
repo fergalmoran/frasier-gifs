@@ -57,9 +57,10 @@ const UploadPage: React.FC<UploadPageProps> = ({ pastedImage }) => {
           method: "POST",
           body,
         });
-        if ((response.status as StatusCodes) === StatusCodes.CREATED) {
-          await utils.post.invalidate();
-          router.replace("/");
+        if (response.status === StatusCodes.OK.valueOf()) {
+          await utils.post.getBySlug.invalidate();
+          await utils.post.getTrending.invalidate();
+          router.replace(`/post/${e.slug}`);
         }
         logger.error("upload-page", "createImage", response.statusText);
         throw new Error(response.statusText);

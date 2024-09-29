@@ -131,6 +131,7 @@ export const postRouter = createTRPCRouter({
       }
       return {
         id: post[0].id,
+        slug: slug,
       };
     }),
 });

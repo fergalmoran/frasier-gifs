@@ -31,6 +31,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
     if (pastedImage) {
       handleNewImage(pastedImage);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
