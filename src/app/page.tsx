@@ -1,3 +1,4 @@
+import React from "react";
 import LandingPage from "@/components/pages/landing-page";
 import { TrendingPosts } from "@/components/trending-posts";
 import { getServerAuthSession } from "@/server/auth";

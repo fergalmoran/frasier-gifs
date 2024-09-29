@@ -1,5 +1,5 @@
 "use client";
-import { Post } from "@/lib/models/post";
+import { type Post } from "@/lib/models/post";
 import { api } from "@/trpc/react";
 import React from "react";
 import { Icons } from "@/components/icons";
@@ -14,7 +14,7 @@ const VoteCount: React.FC<VoteCountProps> = ({ post }) => {
   return (
     <span>
       {voteCount.data ? (
-        voteCount.data.toString()
+        `${voteCount.data.voteCount} votes`
       ) : (
         <Icons.spinner className="animate-spin" />
       )}

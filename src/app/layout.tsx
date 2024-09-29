@@ -14,7 +14,11 @@ import { dashboardConfig } from "@/config/top-nav.config";
 import { siteConfig } from "@/config/site.config";
 import { getServerSession } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import { GlobalPasteListener } from "@/components/global-paste-listener";
+import { ClipboardListener } from "@/components/clipboard-listener";
+import {
+  ClipboardContext,
+  ClipboardProvider,
+} from "@/lib/clipboard/clipboard-context";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -55,12 +59,14 @@ export default async function RootLayout({
       >
         <TRPCReactProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <GlobalPasteListener />
-            <Toaster />
-            <TailwindIndicator />
+            <ClipboardProvider>
+              <ClipboardListener />
+              <Toaster />
+              <TailwindIndicator />
 
-            <TopNavbar items={dashboardConfig.mainNav} session={session} />
-            <main className="m-4">{children}</main>
+              <TopNavbar items={dashboardConfig.mainNav} session={session} />
+              <main className="m-4">{children}</main>
+            </ClipboardProvider>
           </ThemeProvider>
         </TRPCReactProvider>
       </body>

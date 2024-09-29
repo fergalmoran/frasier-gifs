@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { SubmitHandler, Controller } from "react-hook-form";
+import { type SubmitHandler, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import ImageUpload from "@/components/widgets/image-upload";
 import TaggedInput from "@/components/widgets/tagged-input";
@@ -26,32 +26,26 @@ type FormValues = {
   image: string | undefined;
 };
 
-const UploadPage: React.FC = () => {
+type UploadPageProps = {
+  pastedImage?: File;
+};
+const UploadPage: React.FC<UploadPageProps> = ({ pastedImage }) => {
   const utils = api.useUtils();
   const router = useRouter();
+
   const form = useForm<FormValues>({
     defaultValues: {
       title: env.NEXT_PUBLIC_DEBUG_MODE ? "This is my title" : "",
       description: env.NEXT_PUBLIC_DEBUG_MODE ? "This is my description" : "",
       tags: [],
-      image: undefined,
     },
   });
+  if (pastedImage) {
+    logger.log("upload-page", "We gotta file", pastedImage);
+  } else {
+    logger.log("upload-page", "No file");
+  }
 
-  // const imageSchema = z.object({
-  //   image: z
-  //     .any()
-  //     .refine((file) => {
-  //       if (file.size === 0 || file.name === undefined) return false;
-  //       else return true;
-  //     }, "Please update or add new image.")
-
-  //     .refine(
-  //       (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-  //       ".jpg, .jpeg, .png and .webp files are accepted.",
-  //     )
-  //     .refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
-  // });
   const createImage = api.post.create.useMutation({
     onSuccess: async (e) => {
       console.log("upload-page", "onSuccess", e);
@@ -63,9 +57,10 @@ const UploadPage: React.FC = () => {
           method: "POST",
           body,
         });
-        if (response.status === StatusCodes.CREATED) {
-          await utils.post.invalidate();
-          router.replace("/");
+        if (response.status === StatusCodes.OK.valueOf()) {
+          await utils.post.getBySlug.invalidate();
+          await utils.post.getTrending.invalidate();
+          router.replace(`/post/${e.slug}`);
         }
         logger.error("upload-page", "createImage", response.statusText);
         throw new Error(response.statusText);
@@ -83,17 +78,6 @@ const UploadPage: React.FC = () => {
     } catch (error) {
       logger.error("UploadPage", "error", error);
     }
-    // if (data.image) {
-    //   const body = new FormData();
-    //   body.append("file", data.image);
-    //   const response = await fetch("api/upload", {
-    //     method: "POST",
-    //     body,
-    //   });
-    //   if (response.status === 201) {
-    //     router.replace("/");
-    //   }
-    // }
   };
   return (
     <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -133,7 +117,11 @@ const UploadPage: React.FC = () => {
                 control={form.control}
                 name="image"
                 render={({ field: { value, onChange } }) => (
-                  <ImageUpload value={value} onChange={onChange} />
+                  <ImageUpload
+                    value={value}
+                    onChange={onChange}
+                    pastedImage={pastedImage}
+                  />
                 )}
               />
               <FormField

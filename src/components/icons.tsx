@@ -31,6 +31,8 @@ import {
   ThumbsUp,
   ThumbsDown,
   Heart,
+  Undo2,
+  LoaderCircle,
 } from "lucide-react";
 
 export type Icon = typeof LucideIcon;
@@ -46,6 +48,7 @@ export const Icons = {
   down: ThumbsDown,
   post: FileText,
   page: File,
+  progress: LoaderCircle,
   media: Image,
   settings: Settings,
   billing: CreditCard,
@@ -53,6 +56,7 @@ export const Icons = {
   add: Plus,
   warning: AlertTriangle,
   user: User,
+  undo: Undo2,
   arrowRight: ArrowRight,
   help: HelpCircle,
   login: LogIn,
