@@ -1,3 +1,10 @@
 {
-    "reject": ["eslint"]
-  }
+  "reject": [
+    "eslint",
+    "typescript",
+    "@types/eslint",
+    "@typescript-eslint/eslint-plugin",
+    "@typescript-eslint/parser",
+    "eslint-config-next"
+  ]
+}

@@ -27,7 +27,7 @@ const PostActions: React.FC<PostActionsProps> = ({ post }) => {
         title="Downvote"
         action={async () => {
           await vote.mutateAsync({ slug: post.slug, up: false });
-          voteCount.refetch();
+          await voteCount.refetch();
         }}
         icon={<Icons.down className="h-6 w-6" />}
       />
@@ -35,7 +35,7 @@ const PostActions: React.FC<PostActionsProps> = ({ post }) => {
         title="Favourite"
         action={async () => {
           await vote.mutateAsync({ slug: post.slug, up: false });
-          voteCount.refetch();
+          await voteCount.refetch();
         }}
         icon={<Icons.heart className="h-6 w-6" />}
       />

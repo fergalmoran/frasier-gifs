@@ -1,8 +1,7 @@
 import { api } from "@/trpc/server";
-import BlurIn from "./magicui/blur-in";
 import Link from "next/link";
 import { Icons } from "./icons";
-import { Post } from "@/lib/models/post";
+import { type Post } from "@/lib/models/post";
 import {
   Card,
   CardContent,
@@ -12,14 +11,15 @@ import {
 } from "@/components/ui/card";
 import { Button } from "./ui/button";
 import VoteCount from "./widgets/vote-count";
+import Loading from "@/components/widgets/loading";
 
 export const TrendingPosts: React.FC = async () => {
   const trendingPosts = await api.post.getTrending();
   return trendingPosts.length !== 0 ? (
     <div className="masonry sm:masonry-sm md:masonry-md lg:masonry-lg">
       {trendingPosts.map((post: Post) => (
-        <div className="py-2">
-          <Link href={`/post/${post.slug}`} key={post.slug}>
+        <div className="py-2" key={post.slug}>
+          <Link href={`/post/${post.slug}`}>
             <Card className="overflow-hidden">
               <CardHeader className="p-0">
                 <img
@@ -52,9 +52,6 @@ export const TrendingPosts: React.FC = async () => {
       ))}
     </div>
   ) : (
-    <BlurIn
-      word="No images yet"
-      className="scroll-m-20 text-3xl font-bold tracking-tight"
-    />
+    <Loading />
   );
 };

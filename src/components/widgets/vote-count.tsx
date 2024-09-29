@@ -14,6 +14,7 @@ const VoteCount: React.FC<VoteCountProps> = ({ post }) => {
   return (
     <span>
       {voteCount.data ? (
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
         `${voteCount.data.voteCount} votes`
       ) : (
         <Icons.spinner className="animate-spin" />
