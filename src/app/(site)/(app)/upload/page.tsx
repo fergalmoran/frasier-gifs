@@ -3,7 +3,7 @@ import * as React from "react";
 
 import UploadPage from "@/components/pages/upload-page";
 import { ClipboardContext } from "@/lib/clipboard/clipboard-context";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import GenericError from "@/components/errors/generic-error";
 import Loading from "@/components/widgets/loading";
 
@@ -31,7 +31,7 @@ const Upload = () => {
       (c === "1" && clipboardContext?.file != null && !loading) ||
       c !== "1"
     ) {
-      return <UploadPage file={clipboardContext?.file ?? undefined} />;
+      return <UploadPage pastedImage={clipboardContext?.file ?? undefined} />;
     }
     if (c === "1" && loading) {
       return <Loading />;

@@ -5,10 +5,9 @@ import {
 } from "@/server/api/trpc";
 import { slugifyWithCounter } from "@sindresorhus/slugify";
 import { z } from "zod";
-import { posts, users, votes } from "@/server/db/schema";
-import { env } from "@/env";
+import { posts, votes } from "@/server/db/schema";
 import { and, eq, sql } from "drizzle-orm";
-import { Post } from "@/lib/models/post";
+import { type Post } from "@/lib/models/post";
 
 export const postRouter = createTRPCRouter({
   getVoteCount: publicProcedure

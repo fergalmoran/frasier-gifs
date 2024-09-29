@@ -4,18 +4,35 @@ import React from "react";
 import { Icons } from "../icons";
 interface IImageUploadProps {
   value: string | undefined;
+  pastedImage: File | undefined;
   onChange: (image: File) => void;
 }
-const ImageUpload: React.FC<IImageUploadProps> = ({ onChange }) => {
-  const [image, setImage] = React.useState<string>();
+const ImageUpload: React.FC<IImageUploadProps> = ({
+  pastedImage,
+  onChange,
+}) => {
+  const [image, setImage] = React.useState<string | undefined>(
+    pastedImage && URL.createObjectURL(pastedImage),
+  );
+
   const onImageChange = ($event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("ImageUpload", "onImageChange", $event);
     if ($event.target.files?.[0]) {
-      const url = URL.createObjectURL($event.target.files[0]);
-      setImage(url);
-      onChange($event.target.files[0]);
+      handleNewImage($event.target.files[0]);
     }
   };
+
+  const handleNewImage = (imageFile: File) => {
+    const url = URL.createObjectURL(imageFile);
+    setImage(url);
+    onChange(imageFile);
+  };
+
+  React.useEffect(() => {
+    if (pastedImage) {
+      handleNewImage(pastedImage);
+    }
+  }, []);
+
   return (
     <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-secondary px-6 pb-6 pt-5">
       {image ? (
@@ -41,7 +58,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ onChange }) => {
             >
               <span>Upload a file</span>
               <input
-                accept="image/gif,video/mp4,video/mov,video/quicktime,video/webm,youtube,vimeo"
+                accept="image/gif,image/jpg,image/jpeg,image/png,video/mp4,video/mov,video/quicktime,video/webm,youtube,vimeo"
                 id="gif-upload"
                 type="file"
                 className="sr-only"
