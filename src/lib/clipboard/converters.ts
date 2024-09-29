@@ -2,7 +2,7 @@ const clipboardImageToFile = (
   data: DataTransfer,
   callback: (result: File | null | undefined) => void,
 ) => {
-  var items = data.items;
+  const items = data.items;
 
   if (items == undefined || items.length == 0) {
     if (typeof callback == "function") {
@@ -10,10 +10,9 @@ const clipboardImageToFile = (
     }
   }
 
-  for (var i = 0; i < items.length; i++) {
-    // Skip content if not image
-    if (items[i]?.type.indexOf("image") == -1) continue;
-    var blob = items[i]?.getAsFile();
+  for (const item of items) {
+    if (!item.type.includes("image")) continue;
+    const blob = item.getAsFile();
 
     if (typeof callback == "function") {
       callback(blob);

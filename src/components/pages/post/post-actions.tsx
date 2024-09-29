@@ -18,7 +18,7 @@ const PostActions: React.FC<PostActionsProps> = ({ post }) => {
         title="Upvote"
         action={async () => {
           await vote.mutateAsync({ slug: post.slug, up: true });
-          voteCount.refetch();
+          await voteCount.refetch();
         }}
         icon={<Icons.up className="h-6 w-6" />}
       />

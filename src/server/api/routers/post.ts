@@ -18,7 +18,7 @@ export const postRouter = createTRPCRouter({
         .execute(sql`SELECT SUM(CASE WHEN up = TRUE THEN 1 ELSE -1 END)
             FROM public.votes v
             WHERE v.post_id = (SELECT id FROM posts WHERE slug = ${input.slug})`);
-      return count[0]?.sum ?? '0';
+      return { voteCount: count[0]?.sum ?? "0" };
     }),
   getBySlug: publicProcedure
     .input(z.object({ slug: z.string() }))
@@ -102,9 +102,9 @@ export const postRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      var slugify = slugifyWithCounter();
-      var found = false;
-      var slug = "";
+      const slugify = slugifyWithCounter();
+      let found = false;
+      let slug = "";
       do {
         slug = slugify(input.title);
         const existing = await ctx.db
