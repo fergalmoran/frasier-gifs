@@ -7,11 +7,11 @@ export const config = {
 };
 const PATTERNS: [
   URLPattern,
-  ({ pathname }: { pathname: { groups: any } }) => any,
+  ({ pathname }: { pathname: { groups: unknown } }) => unknown,
 ][] = [
   [
     new URLPattern({ pathname: "/i/:id" }),
-    ({ pathname }: { pathname: { groups: any } }) => pathname.groups,
+    ({ pathname }: { pathname: { groups: unknown } }) => pathname.groups,
   ],
 ];
 
