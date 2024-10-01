@@ -3,9 +3,9 @@ import {
   boolean,
   index,
   integer,
+  pgEnum,
   pgTableCreator,
   primaryKey,
-  serial,
   text,
   timestamp,
   varchar,
@@ -13,6 +13,11 @@ import {
 import { type AdapterAccount } from "next-auth/adapters";
 
 export const createTable = pgTableCreator((name) => `${name}`);
+export const postVisibilityEnum = pgEnum("post-visibility", [
+  "public",
+  "private",
+  "link",
+]);
 
 export const posts = createTable(
   "posts",
@@ -26,6 +31,7 @@ export const posts = createTable(
     description: varchar("description"),
     tags: text("tags").array(),
     filePath: varchar("filepath", { length: 256 }),
+    visibility: postVisibilityEnum("visibility").default("public").notNull(),
     createdById: varchar("created_by", { length: 255 })
       .notNull()
       .references(() => users.id),
